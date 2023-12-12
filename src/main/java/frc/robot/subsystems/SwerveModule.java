@@ -6,8 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.ctre.phoenix.sensors.SensorTimeBase;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
+
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Constants.ModuleConstants;
 
 public class SwerveModule {
@@ -22,7 +22,7 @@ public class SwerveModule {
   private final CANSparkMax m_turningMotor;
 
   private final RelativeEncoder m_driveEncoder;
-  private final WPI_CANCoder m_turningEncoder;
+  private final AnalogEncoder m_turningEncoder  = new AnalogEncoder(0);
 
   private final PIDController m_drivePIDController = new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
 
@@ -56,8 +56,6 @@ public class SwerveModule {
 
     m_driveEncoder = m_driveMotor.getEncoder();
 
-    m_turningEncoder = new WPI_CANCoder(turningCanCoderChannel);
-
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
     // resolution.
@@ -71,10 +69,7 @@ public class SwerveModule {
     // encoder.
     // This is the the angle through an entire rotation (2 * pi) divided by the
     // encoder resolution.
-    m_turningEncoder.configFeedbackCoefficient(
-        2 * Math.PI / 4096.0,
-        "rad",
-        SensorTimeBase.PerSecond);
+    
 
 
     // Limit the PID Controller's input range between -pi and pi and set the input
