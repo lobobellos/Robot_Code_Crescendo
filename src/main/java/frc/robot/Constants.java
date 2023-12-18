@@ -75,11 +75,6 @@ public final class Constants {
       public static double kD = 0.0;
     }
     
-    public static final class DrivePID{
-      public static double kP = 0.005;
-      public static double kI = 0.0;
-      public static double kD = 0.0;
-    }
 
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 18;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 18;
@@ -87,9 +82,6 @@ public final class Constants {
     public static final double kWheelDiameterMeters = 0.15;
     public static final double kdriveConversionFactor = 1.0/6.75;
     public static final double kTurningConversionFactor = 1.0/12.8;
-
-    
-
   }
 
   public static final class OIConstants {

@@ -6,8 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -17,7 +18,6 @@ import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstants;
-import frc.robot.Constants.ModuleConstants.DrivePID;
 import frc.robot.Constants.ModuleConstants.TurningPID;
 
 public class SwerveModule extends SubsystemBase{
@@ -27,10 +27,10 @@ public class SwerveModule extends SubsystemBase{
   private final RelativeEncoder m_driveEncoder;
   private final AnalogEncoder m_turningEncoder;
 
-  private final PIDController m_drivePIDController = new PIDController(
-      DrivePID.kP,
-      DrivePID.kI,
-      DrivePID.kD);
+  private final SparkMaxPIDController m_driveController; 
+
+  private final boolean driveMotorReversed;
+
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(
@@ -63,6 +63,18 @@ public class SwerveModule extends SubsystemBase{
     m_driveEncoder = m_driveMotor.getEncoder();
     m_turningEncoder = new AnalogEncoder(turningEncoderChannel);
 
+    m_driveController = m_driveMotor.getPIDController();
+
+    CANSparkMax.enableExternalUSBControl(false);
+  
+    this.driveMotorReversed = driveEncoderReversed;
+
+    //m_driveController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal,0);
+    //m_driveController.setSmartMotionMaxAccel(1000,0);
+    //m_driveController.setSmartMotionMaxVelocity(1000,0);
+    //m_driveController.setSmartMotionAllowedClosedLoopError(10,0);
+
+    m_driveController.setFF(0.0002,0);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -84,7 +96,6 @@ public class SwerveModule extends SubsystemBase{
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     addChild("steering pid", m_turningPIDController);
-    addChild("driving pid", m_drivePIDController);
     addChild("turning encoder", m_turningEncoder);
   }
 
@@ -118,15 +129,24 @@ public class SwerveModule extends SubsystemBase{
     SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getDistance()));
 
     // Calculate the drive output from the drive PID controller.
-    final double driveOutput = m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+    
+    final double speedMetersPerSecond =  (driveMotorReversed? -1.0: 1.0)* state.speedMetersPerSecond;
+
+    SmartDashboard.putNumber("m/s speed", speedMetersPerSecond);
+
+    final double RPMspeed = speedMetersPerSecond *60 * (1.0/0.0508)* (1.0/6.75);
+
+    SmartDashboard.putNumber("rpm speed", RPMspeed);
+
+    double multiplier = 3.0;
+
+    m_driveController.setReference(RPMspeed*multiplier,ControlType.kVelocity,0);
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput = m_turningPIDController.calculate(m_turningEncoder.getDistance(),
         state.angle.getRadians());
 
-
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
     m_turningMotor.set(turnOutput);
   }
 
