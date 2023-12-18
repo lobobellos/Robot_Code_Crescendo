@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,29 +21,32 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kFrontLeftDriveMotorPort,
       DriveConstants.kFrontLeftTurningMotorPort,
       DriveConstants.kFrontLeftTurningEncoderPorts,
-      DriveConstants.kFrontLeftDriveEncoderReversed,
-      DriveConstants.kFrontLeftTurningEncoderReversed);
+      DriveConstants.kFrontLeftTurningEncoderOffset,
+      DriveConstants.kFrontLeftDriveEncoderReversed);
 
   private final SwerveModule m_rearLeft = new SwerveModule(
       DriveConstants.kRearLeftDriveMotorPort,
       DriveConstants.kRearLeftTurningMotorPort,
       DriveConstants.kRearLeftTurningEncoderPorts,
-      DriveConstants.kRearLeftDriveEncoderReversed,
-      DriveConstants.kRearLeftTurningEncoderReversed);
+      DriveConstants.kRearLeftTurningEncoderOffset,
+      DriveConstants.kRearLeftDriveEncoderReversed);
 
   private final SwerveModule m_frontRight = new SwerveModule(
       DriveConstants.kFrontRightDriveMotorPort,
       DriveConstants.kFrontRightTurningMotorPort,
       DriveConstants.kFrontRightTurningEncoderPorts,
-      DriveConstants.kFrontRightDriveEncoderReversed,
-      DriveConstants.kFrontRightTurningEncoderReversed);
+      DriveConstants.kFrontRightTurningEncoderOffset,
+      DriveConstants.kFrontRightDriveEncoderReversed);
 
   private final SwerveModule m_rearRight = new SwerveModule(
       DriveConstants.kRearRightDriveMotorPort,
       DriveConstants.kRearRightTurningMotorPort,
       DriveConstants.kRearRightTurningEncoderPorts,
-      DriveConstants.kRearRightDriveEncoderReversed,
-      DriveConstants.kRearRightTurningEncoderReversed);
+      DriveConstants.kRearRightTurningEncoderOffset,
+      DriveConstants.kRearRightDriveEncoderReversed);
+
+  //the field to send to shuffleboard
+  private final Field2d field= new Field2d();
 
   // The gyro sensor
   private final Gyro gyro = new Gyro();
@@ -59,6 +64,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+
+    addChild("frontLeft", m_frontLeft);
+    addChild("frontRight", m_frontRight);
+    addChild("rearLeft", m_rearLeft);
+    addChild("rearRight", m_rearRight);
+
+    addChild("field", field);
+    var tab = Shuffleboard.getTab("potato");
+    tab.add("drive subsystem",this);
+    tab.add(m_frontLeft);
+
+
   }
 
   @Override
@@ -72,6 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    field.setRobotPose(getPose());
   }
 
   /**
@@ -114,6 +133,8 @@ public class DriveSubsystem extends SubsystemBase {
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation())
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
+
+
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates,
         DriveConstants.kMaxSpeedMetersPerSecond);
