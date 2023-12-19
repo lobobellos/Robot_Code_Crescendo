@@ -34,9 +34,9 @@ public final class Constants {
     public static final int kRearRightTurningEncoderPorts = 0;
 
     public static final double kFrontLeftTurningEncoderOffset = -0.844; //3
-    public static final double kRearLeftTurningEncoderOffset = -0.39 ; //7
+    public static final double kRearLeftTurningEncoderOffset = -0.39 ; //5
     public static final double kFrontRightTurningEncoderOffset = -0.541;//1
-    public static final double kRearRightTurningEncoderOffset = -0.576;//5
+    public static final double kRearRightTurningEncoderOffset = -0.576;//7
 
     public static final boolean kFrontLeftDriveEncoderReversed = true;
     public static final boolean kRearLeftDriveEncoderReversed = true;
