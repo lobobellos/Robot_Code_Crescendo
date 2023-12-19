@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ModuleConstants.DrivePID;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -46,6 +47,13 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningEncoderOffset,
       DriveConstants.kRearRightDriveEncoderReversed);
 
+  private final SwerveModule[] modules = {
+    m_frontLeft,
+    m_frontRight,
+    m_rearLeft,
+    m_rearRight
+  };
+
   //the field to send to shuffleboard
   private final Field2d field= new Field2d();
 
@@ -72,11 +80,14 @@ public class DriveSubsystem extends SubsystemBase {
     addChild("rearRight", m_rearRight);
 
     addChild("field", field);
-    var tab = Shuffleboard.getTab("potato");
-    tab.add("drive subsystem",this);
-    tab.add(m_frontLeft);
+    
 
-
+    var driveTab = Shuffleboard.getTab("drive");
+    driveTab.addDoubleArray("module velocities",
+    ()->new double[]{
+      m_frontLeft.getState().speedMetersPerSecond,
+      m_frontLeft.velocitySetpoint
+    });
   }
 
   @Override
@@ -90,10 +101,27 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-
-    field.setRobotPose(getPose());
+    var pose = getPose();
+    field.setRobotPose(pose);
+    SmartDashboard.putNumber("poseX",pose.getX());
+    SmartDashboard.putNumber("poseY",pose.getY());
 
     SmartDashboard.putData("field", field);
+
+    var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
+    SmartDashboard.putNumber("driveFF", FF);
+    
+    var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
+    SmartDashboard.putNumber("driveP", kP);
+    
+    var kD = SmartDashboard.getNumber("driveD", DrivePID.kD);
+    SmartDashboard.putNumber("driveD", kD);
+
+    for (SwerveModule module : modules) {
+      module.FF = FF;
+      module.kP = kP;
+
+    }
   }
 
   /**
@@ -132,6 +160,13 @@ public class DriveSubsystem extends SubsystemBase {
    *                      field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    
+    final var multiplier = 1.0;
+
+    xSpeed*=multiplier;
+    ySpeed*=multiplier;
+    rot*=(multiplier*1.2);
+    
     SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation())
@@ -146,6 +181,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+
+    //putVelocities
+    
   }
 
   /**

@@ -15,11 +15,14 @@ public class PDP extends SubsystemBase {
     pdp = new PowerDistribution(deviceID, ModuleType.kCTRE);
     addChild("pdp",pdp);
     tab =Shuffleboard.getTab("PDP");
+    tab.addNumber("pdp/voltage", pdp::getVoltage);
+    tab.addNumber("pdp/current0", ()->pdp.getCurrent(0));
+
   }
   
   public RunCommand updatePDP(){
     return new RunCommand(()->{
-      tab.add("pdp",pdp);
+      
     }, this);
   }
 
