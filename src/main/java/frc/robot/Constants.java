@@ -33,19 +33,19 @@ public final class Constants {
     public static final int kFrontRightTurningEncoderPorts = 1;
     public static final int kRearRightTurningEncoderPorts = 0;
 
-    public static final double kFrontLeftTurningEncoderOffset = -0.844; //3
-    public static final double kRearLeftTurningEncoderOffset = -0.39 ; //5
-    public static final double kFrontRightTurningEncoderOffset = -0.541;//1
-    public static final double kRearRightTurningEncoderOffset = -0.576;//7
+    public static final double kFrontLeftTurningEncoderOffset = -0.344; //3
+    public static final double kRearLeftTurningEncoderOffset = -0.89 ; //5
+    public static final double kFrontRightTurningEncoderOffset = -0.041;//1
+    public static final double kRearRightTurningEncoderOffset = -0.076;//7
 
     public static final boolean kFrontLeftDriveEncoderReversed = true;
     public static final boolean kRearLeftDriveEncoderReversed = true;
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
-    public static final double kTrackWidth = 0.5;
+    public static final double kTrackWidth = 0.45;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    public static final double kWheelBase = 0.45;
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
@@ -56,15 +56,9 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or theoretically
-    // for *your* robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for your robot.
-    public static final double ksVolts = 1;
-    public static final double kvVoltSecondsPerMeter = 0.8;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.15;
+    public static final double kMaxSpeedMetersPerSecond = 5.2;
+    public static final double kDemoSpeedMetersPerSecond = 1.5;
 
-    public static final double kMaxSpeedMetersPerSecond = 12;
   }
 
   public static final class ModuleConstants {
@@ -101,6 +95,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double deadband = 0.05;
   }
 
   public static final class AutoConstants {
