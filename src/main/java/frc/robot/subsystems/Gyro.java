@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase {
@@ -14,8 +15,8 @@ public class Gyro extends SubsystemBase {
     addChild("imu", imu);
   }
 
-  public void zero() {
-    imu.reset();
+  public InstantCommand zero() {
+    return new InstantCommand(()->imu.reset(), this);
   }
 
   public void recalibrate() {
