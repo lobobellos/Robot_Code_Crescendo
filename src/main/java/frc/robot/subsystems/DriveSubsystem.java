@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants.DrivePID;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -59,6 +61,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private final Gyro gyro = new Gyro();
+
+  private boolean isDemo = true;
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -161,11 +165,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     
-    final var multiplier = 1.0;
-
-    xSpeed*=multiplier;
-    ySpeed*=multiplier;
-    rot*=(multiplier*1.2);
+    final var multiplier = isDemo? DriveConstants.kDemoSpeedMetersPerSecond : DriveConstants.kMaxSpeedMetersPerSecond;
+    xSpeed= MathUtil.applyDeadband(xSpeed, 0.05)*multiplier;
+    ySpeed= MathUtil.applyDeadband(ySpeed, 0.05)*multiplier;
+    rot= MathUtil.applyDeadband(rot, 0.05)*multiplier;
     
     SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
@@ -184,6 +187,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     //putVelocities
     
+  }
+
+  public InstantCommand toggleDemoMode(){
+    return new InstantCommand(()->isDemo = !isDemo);
   }
 
   /**
