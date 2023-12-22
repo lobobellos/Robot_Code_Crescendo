@@ -63,8 +63,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private boolean isDemo = true;
 
-  // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry; 
+  private final SwerveDriveOdometry m_odometry; 
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(Gyro gyro) {
@@ -72,21 +71,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       gyro.getRotation(),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+      modulePositions());
 
     addChild("frontLeft", m_frontLeft);
     addChild("frontRight", m_frontRight);
     addChild("rearLeft", m_rearLeft);
     addChild("rearRight", m_rearRight);
-
     addChild("field", field);
     
-
     var driveTab = Shuffleboard.getTab("drive");
     driveTab.addDoubleArray("module velocities",
     ()->new double[]{
@@ -95,25 +87,25 @@ public class DriveSubsystem extends SubsystemBase {
     });
   }
 
+  public SwerveModulePosition[] modulePositions(){
+    var arr = new SwerveModulePosition[4];
+    for(var i = 0;i<modules.length;i++) arr[i] = modules[i].getPosition();
+    return arr;
+  }
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
         gyro.getRotation(),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        });
+        modulePositions());
     var pose = getPose();
     field.setRobotPose(pose);
     SmartDashboard.putNumber("poseX",pose.getX());
     SmartDashboard.putNumber("poseY",pose.getY());
-
     SmartDashboard.putData("field", field);
 
-    // 
+    // Used for tuning. DO NOT DELETE!
     // var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
     // SmartDashboard.putNumber("driveFF", FF);
     // var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
@@ -128,41 +120,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         gyro.getRotation(),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        },
+        modulePositions(),
         pose);
   }
 
-  /**
-   * Method to drive the robot using joystick info.
-   *
-   * @param xSpeed        Speed of the robot in the x direction (forward).
-   * @param ySpeed        Speed of the robot in the y direction (sideways).
-   * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the
-   *                      field.
-   */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     
     final var multiplier = isDemo? DriveConstants.kDemoSpeedMetersPerSecond : DriveConstants.kMaxSpeedMetersPerSecond;
@@ -175,7 +143,6 @@ public class DriveSubsystem extends SubsystemBase {
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation())
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates,
         DriveConstants.kMaxSpeedMetersPerSecond);
@@ -184,20 +151,12 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
-
-    //putVelocities
-    
   }
 
   public InstantCommand toggleDemoMode(){
     return new InstantCommand(()->isDemo = !isDemo);
   }
 
-  /**
-   * Sets the swerve ModuleStates.
-   *
-   * @param desiredStates The desired SwerveModule states.
-   */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -207,13 +166,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
-  /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
-    m_frontLeft.resetEncoders();
-    m_rearLeft.resetEncoders();
-    m_frontRight.resetEncoders();
-    m_rearRight.resetEncoders();
+    for(var module : modules){
+      module.resetEncoders(); 
+    }
   }
-
-
 }
