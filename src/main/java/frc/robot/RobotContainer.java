@@ -18,11 +18,13 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PDPConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.PDP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
 import java.util.List;
 
 /*
@@ -33,10 +35,11 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-private final PDP pdp = new PDP(PDPConstants.deviceID);
+  private final Gyro gyro = new Gyro();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem(gyro);
+  private final PDP pdp = new PDP(PDPConstants.deviceID);
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,13 +64,15 @@ private final PDP pdp = new PDP(PDPConstants.deviceID);
     );
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
-   * {@link JoystickButton}.
-   */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    m_driverController.a()
+    .onTrue(gyro.zero());
+
+    m_driverController.leftBumper()
+    .and(m_driverController.rightBumper())
+    .and(m_driverController.y())
+    .onTrue(m_robotDrive.toggleDemoMode());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

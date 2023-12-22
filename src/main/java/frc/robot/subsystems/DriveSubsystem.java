@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.ModuleConstants.DrivePID;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -60,12 +59,17 @@ public class DriveSubsystem extends SubsystemBase {
   private final Field2d field= new Field2d();
 
   // The gyro sensor
-  private final Gyro gyro = new Gyro();
+  private final Gyro gyro;
 
   private boolean isDemo = true;
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  SwerveDriveOdometry m_odometry; 
+
+  /** Creates a new DriveSubsystem. */
+  public DriveSubsystem(Gyro gyro) {
+    this.gyro = gyro;
+    m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
       gyro.getRotation(),
       new SwerveModulePosition[] {
@@ -74,9 +78,6 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
-
-  /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
 
     addChild("frontLeft", m_frontLeft);
     addChild("frontRight", m_frontRight);
@@ -112,20 +113,19 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putData("field", field);
 
-    var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
-    SmartDashboard.putNumber("driveFF", FF);
-    
-    var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
-    SmartDashboard.putNumber("driveP", kP);
-    
-    var kD = SmartDashboard.getNumber("driveD", DrivePID.kD);
-    SmartDashboard.putNumber("driveD", kD);
+    // 
+    // var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
+    // SmartDashboard.putNumber("driveFF", FF);
+    // var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
+    // SmartDashboard.putNumber("driveP", kP);
+    // var kD = SmartDashboard.getNumber("driveD", DrivePID.kD);
+    // SmartDashboard.putNumber("driveD", kD);
+    // for (SwerveModule module : modules) {
+    //   module.FF = FF;
+    //   module.kP = kP;
+    //   module.kD = kD;
+    // }
 
-    for (SwerveModule module : modules) {
-      module.FF = FF;
-      module.kP = kP;
-
-    }
   }
 
   /**

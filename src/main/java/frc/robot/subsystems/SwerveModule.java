@@ -44,9 +44,9 @@ public class SwerveModule extends SubsystemBase {
           ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
           ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
 
-  public double FF;
-  public double kP;
-  public double kD;
+  public double FF = DrivePID.kFF;
+  public double kP = DrivePID.kP;
+  public double kD = DrivePID.kD;
 
   public SwerveModule(
       int driveMotorChannel,
