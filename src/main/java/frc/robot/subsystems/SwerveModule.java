@@ -18,6 +18,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CurrentLimits;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.ModuleConstants.DrivePID;
 import frc.robot.Constants.ModuleConstants.TurningPID;
@@ -41,8 +42,8 @@ public class SwerveModule extends SubsystemBase {
       TurningPID.kI,
       TurningPID.kD,
       new TrapezoidProfile.Constraints(
-          ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
-          ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
+          ModuleConstants.kMaxModuleAngularSpeed,
+          ModuleConstants.kMaxModuleAngularAcceleration));
 
   public double FF = DrivePID.kFF;
   public double kP = DrivePID.kP;
@@ -64,9 +65,16 @@ public class SwerveModule extends SubsystemBase {
 
     CANSparkMax.enableExternalUSBControl(false);
 
+    m_driveMotor.setSmartCurrentLimit(
+        CurrentLimits.driveMotorStall,
+        CurrentLimits.driveMotorFree);
+    m_turningMotor.setSmartCurrentLimit(
+        CurrentLimits.turningMotorStall,
+        CurrentLimits.turningMotorFree);
+
     m_driveMotor.setInverted(driveEncoderReversed);
     m_driveMotor.setIdleMode(IdleMode.kCoast);
-    m_turningMotor.setIdleMode(IdleMode.kCoast); //TODO: turn these back to brake
+    m_turningMotor.setIdleMode(IdleMode.kCoast); // TODO: turn these back to brake
 
     m_driveController.setFF(DrivePID.kFF, 0);
     m_driveController.setP(DrivePID.kP, 0);
@@ -129,7 +137,6 @@ public class SwerveModule extends SubsystemBase {
     m_driveController.setP(kP, 0);
     m_driveController.setD(kD, 0);
 
-
-    SmartDashboard.putNumber("encoder"+m_turningMotor.getDeviceId()+" offset", getTurningRotation().getRotations());
+    SmartDashboard.putNumber("encoder/offset " + m_turningMotor.getDeviceId(), getTurningRotation().getRotations());
   }
 }
