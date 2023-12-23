@@ -17,6 +17,14 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class CurrentLimits{
+    public static final int driveMotorStall = 30;
+    public static final int driveMotorFree = 35;
+
+    public static final int turningMotorStall = 30;
+    public static final int turningMotorFree = 35;
+  }
   public static final class DriveConstants {
     public static final int kFrontLeftDriveMotorPort = 4;
     public static final int kRearLeftDriveMotorPort = 6;
@@ -56,8 +64,15 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final double kMaxSpeedMetersPerSecond = 5.2;
-    public static final double kDemoSpeedMetersPerSecond = 1.5;
+    public static final double kMaxSpeedMetersPerSecond = 4.2;
+    public static final double kDemoSpeedMetersPerSecond = 1.0;
+
+    //used for keeping the robot pointed in the right direction
+    public static final class RotationPID{
+      public static final double kP = 4.5;
+      public static final double kI = 0.0;
+      public static final double kD =0.1;
+    }
 
   }
 
@@ -70,21 +85,23 @@ public final class Constants {
     }
     
     public static final class DrivePID{
-      public static double kFF = 0.2;
+      public static double kFF = 0.22;
       public static double kP = 0.1;
       public static double kI = 0.0;
       public static double kD = 0.05;
     }
     
 
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 100;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 100;
-    //m
-    public static final double kWheelDiameter = 0.15;
+    public static final double kMaxModuleAngularSpeed = 100; // rad/s
+    public static final double kMaxModuleAngularAcceleration = 100; // rad/s^2
+
+    public static final double kWheelDiameter = 0.095; //meters
+    public static final double driveGearRatio = 1.0/6.75;
+
     // converting to m
-    public static final double kdrivePositionConversionFactor = (1.0/20.0959);
+    public static final double kdrivePositionConversionFactor = driveGearRatio * kWheelDiameter * Math.PI;
     //converting to m/s
-    public static final double kdriveVelocityConversionFactor = (1.0/20.0959)/9.0 /6.0 ;
+    public static final double kdriveVelocityConversionFactor = (driveGearRatio /60.0 )* kWheelDiameter * Math.PI;
     //converting to radians
     public static final double kTurningConversionFactor = 1.0/12.8;
   }
@@ -96,6 +113,8 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double deadband = 0.05;
+
+    public static final double rotationMultiplier = 0.04;
   }
 
   public static final class AutoConstants {
