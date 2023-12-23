@@ -24,4 +24,6 @@ Hardware components for this year include:
 |Left Y Axis |Y Speed|
 |Right X Axis|Rotation Speed|
 |ButtonA|Re-Zero Gyro|
-|ButtonR+ButtonL+ButtonY|Toggle Demo Mode|
+|ButtonL|Turn 90deg to left|
+|ButtonR|Turn 90deg to right|
+|ButtonR+ButtonL+ButtonY|Toggle Demo Mode (terrifying)|
