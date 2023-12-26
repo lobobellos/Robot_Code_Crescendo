@@ -13,6 +13,7 @@ Hardware components for this year include:
 - Phoenix 5: `https://maven.ctr-electronics.com/release/com/ctre/phoenix/Phoenix5-frc2024-beta-latest.json`
 - Phoenix 6: `https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2024-beta-latest.json`
 - ADIS16470: `https://maven.highcurrent.io/vendordeps/ADIS16470.json`
+- Pathplanner Lib: `https://3015rangerrobotics.github.io/pathplannerlib/PathplannerLib.json`
 - WPILIB New Commands
 
 
