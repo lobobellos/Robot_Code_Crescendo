@@ -121,16 +121,12 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI/2;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI/2;
-
+    public static final double kMaxSpeedMetersPerSecond = 3;
 
     // Constraint for the motion profiled robot angle controller
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
       new PIDConstants(1, 0, 0, 0), // translation constants
-      new PIDConstants(2, 0, 0), //rotation constants
+      new PIDConstants(4.5, 0, 0), //rotation constants
       AutoConstants.kMaxSpeedMetersPerSecond, // max velocity
       Math.hypot(DriveConstants.kTrackWidth/2, DriveConstants.kWheelBase/2),
       new ReplanningConfig()
