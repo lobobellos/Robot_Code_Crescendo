@@ -9,7 +9,14 @@ import frc.robot.Constants.PDPConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.PDP;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -33,8 +40,14 @@ public class RobotContainer {
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
+  SendableChooser<Command> autoChooser;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //register commands
+    NamedCommands.registerCommand("resetRotation", resetRotation);
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -54,9 +67,17 @@ public class RobotContainer {
     pdp.setDefaultCommand(
         pdp.updatePDP()
     );
+
+
+    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    SmartDashboard.putData("Auto Mode", autoChooser);
   }
 
   private void configureButtonBindings() {
+
+    SmartDashboard.putData("Potato", new PathPlannerAuto("lilTurn"));
+
+
     m_driverController.a()
     .onTrue(resetRotation);
 
@@ -78,6 +99,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PrintCommand("uh... there's no auto, dude");
+    return autoChooser == null 
+    ? new PrintCommand("uh... there's no auto, dude") 
+    : autoChooser.getSelected();
   }
 }
