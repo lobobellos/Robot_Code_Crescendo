@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.DriveConstants.RotationPID;
@@ -71,6 +74,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   private Rotation2d rotationSetpoint = new Rotation2d(0);
 
+  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
+
   private final PIDController rotationPID = new PIDController(
       RotationPID.kP,
       RotationPID.kI,
@@ -98,6 +103,17 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontLeft.getState().speedMetersPerSecond,
             m_frontLeft.velocitySetpoint
         });
+
+
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetPose, 
+      this::getChassisSpeeds, 
+      this::driveRawFieldRelative, 
+      AutoConstants.pathFollowerConfig, 
+      this
+    );
+
   }
 
   public SwerveModulePosition[] modulePositions() {
@@ -105,6 +121,10 @@ public class DriveSubsystem extends SubsystemBase {
     for (var i = 0; i < modules.length; i++)
       arr[i] = modules[i].getPosition();
     return arr;
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return chassisSpeeds;
   }
 
   @Override
@@ -138,11 +158,8 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
-        gyro.getRotation(),
-        modulePositions(),
-        pose);
+  public void resetPose(Pose2d pose) {
+    m_odometry.resetPosition(gyro.getRotation(), modulePositions(), pose);
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -164,14 +181,30 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("rotation/pidOutput", rotationOutput);
 
-    SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        fieldRelative
+    chassisSpeeds  = fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotationOutput, gyro.getRotation())
-            : new ChassisSpeeds(xSpeed, ySpeed, rotationOutput));
+            : new ChassisSpeeds(xSpeed, ySpeed, rotationOutput);
+
+    SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates,
         DriveConstants.kMaxSpeedMetersPerSecond);
+
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  public void driveRawFieldRelative(ChassisSpeeds speeds) {
+    driveRawRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,gyro.getRotation()));
+  }
+
+  public void driveRawRobotRelative(ChassisSpeeds speeds) {
+    SwerveModuleState[] swerveModuleStates = 
+    DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
 
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
@@ -198,12 +231,16 @@ public class DriveSubsystem extends SubsystemBase {
     });
   }
 
-  public InstantCommand turnTo(Rotation2d rot){
-    return new InstantCommand(()->{rotationSetpoint = rot;});
+  public InstantCommand turnTo(Rotation2d rot) {
+    return new InstantCommand(() -> {
+      rotationSetpoint = rot;
+    });
   }
 
-  public InstantCommand turnAmmount(Rotation2d rot){
-    return new InstantCommand(()->{rotationSetpoint = rotationSetpoint.minus(rot);});
+  public InstantCommand turnAmmount(Rotation2d rot) {
+    return new InstantCommand(() -> {
+      rotationSetpoint = rotationSetpoint.minus(rot);
+    });
   }
 
   public void resetEncoders() {
