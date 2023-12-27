@@ -73,8 +73,8 @@ public class SwerveModule extends SubsystemBase {
         CurrentLimits.turningMotorFree);
 
     m_driveMotor.setInverted(driveEncoderReversed);
-    m_driveMotor.setIdleMode(IdleMode.kCoast);
-    m_turningMotor.setIdleMode(IdleMode.kCoast); // TODO: turn these back to brake
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor.setIdleMode(IdleMode.kCoast); // TODO: turn this back to brake
 
     m_driveController.setFF(DrivePID.kFF, 0);
     m_driveController.setP(DrivePID.kP, 0);
