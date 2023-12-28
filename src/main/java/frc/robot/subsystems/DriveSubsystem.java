@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.DriveConstants.RotationFF;
 import frc.robot.Constants.DriveConstants.RotationPID;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,24 +64,23 @@ public class DriveSubsystem extends SubsystemBase {
       m_rearRight
   };
 
-  // the field to send to shuffleboard
-  private final Field2d field = new Field2d();
-
-  // The gyro sensor
-  private final Gyro gyro;
-
-  private boolean isDemo = true;
-
+  private final Field2d field = new Field2d(); // the field to send to shuffleboard
+  private final Gyro gyro; // The gyro sensor
   private final SwerveDriveOdometry m_odometry;
-
-  private Rotation2d rotationSetpoint = new Rotation2d(0);
-
-  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
-
   private final PIDController rotationPID = new PIDController(
       RotationPID.kP,
       RotationPID.kI,
       RotationPID.kD);
+  private  SimpleMotorFeedforward rotationFF = new SimpleMotorFeedforward(
+    RotationFF.kS,
+    RotationFF.kV,
+    RotationFF.kA
+  );
+
+  private boolean isDemo = true;
+  private Rotation2d rotationSetpoint = new Rotation2d(0);
+  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
+
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(Gyro gyro) {
@@ -103,6 +104,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontLeft.getState().speedMetersPerSecond,
             m_frontLeft.velocitySetpoint
         });
+    driveTab.addDoubleArray("rotation ",
+        () -> new double[] {
+            rotationSetpoint.getDegrees(),
+            MathUtil.inputModulus(gyro.getRotation().getDegrees(),-180,180)
+        });
+    driveTab.add("rotation pid",rotationPID);
 
 
     AutoBuilder.configureHolonomic(
@@ -139,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("poseY", pose.getY());
     SmartDashboard.putData("field", field);
 
-    // Used for tuning. DO NOT DELETE!
+    //Used for tuning. DO NOT DELETE!
     // var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
     // SmartDashboard.putNumber("driveFF", FF);
     // var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
@@ -152,6 +159,15 @@ public class DriveSubsystem extends SubsystemBase {
     // module.kD = kD;
     // }
 
+    var kS = SmartDashboard.getNumber("rotationKS", RotationFF.kS);
+    SmartDashboard.putNumber("rotationKS", kS);
+    var kV = SmartDashboard.getNumber("rotationKV", RotationFF.kV);
+    SmartDashboard.putNumber("rotationKV", kV);
+    
+
+    rotationFF = new SimpleMotorFeedforward(
+        kS,kV
+    );
   }
 
   public Pose2d getPose() {
@@ -172,12 +188,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     rotationSetpoint = rotationSetpoint.plus(new Rotation2d(rot));
 
-    SmartDashboard.putNumber("rotation/add", rot);
-    SmartDashboard.putNumber("rotation/setpoint", rotationSetpoint.getRadians());
 
     var rotationOutput = rotationPID.calculate(
         gyro.getRotation().getRadians(),
-        rotationSetpoint.getRadians());
+        rotationSetpoint.getRadians())
+        + rotationFF.calculate(gyro.getAngularVelocity().getRadians())
+        ;
 
     SmartDashboard.putNumber("rotation/pidOutput", rotationOutput);
 
