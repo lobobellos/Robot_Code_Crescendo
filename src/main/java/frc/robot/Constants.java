@@ -125,7 +125,7 @@ public final class Constants {
 
     // Constraint for the motion profiled robot angle controller
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-      new PIDConstants(1, 0, 0, 0), // translation constants
+      new PIDConstants(0.5, 0, 0, 0), // translation constants
       new PIDConstants(4.5, 0, 0), //rotation constants
       AutoConstants.kMaxSpeedMetersPerSecond, // max velocity
       Math.hypot(DriveConstants.kTrackWidth/2, DriveConstants.kWheelBase/2),
