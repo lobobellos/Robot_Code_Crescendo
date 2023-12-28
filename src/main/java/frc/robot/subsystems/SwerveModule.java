@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimits;
 import frc.robot.Constants.ModuleConstants;
@@ -137,6 +136,6 @@ public class SwerveModule extends SubsystemBase {
     m_driveController.setP(kP, 0);
     m_driveController.setD(kD, 0);
 
-    SmartDashboard.putNumber("encoder/offset " + m_turningMotor.getDeviceId(), getTurningRotation().getRotations());
+    //SmartDashboard.putNumber("encoder/offset " + m_turningMotor.getDeviceId(), getTurningRotation().getRotations());
   }
 }
