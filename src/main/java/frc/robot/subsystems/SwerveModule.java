@@ -132,9 +132,10 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void periodic() {
-    m_driveController.setFF(FF, 0);
-    m_driveController.setP(kP, 0);
-    m_driveController.setD(kD, 0);
+    // used for tuning. DO NOT DELETE
+    // m_driveController.setFF(FF, 0);
+    // m_driveController.setP(kP, 0);
+    // m_driveController.setD(kD, 0);
 
     //SmartDashboard.putNumber("encoder/offset " + m_turningMotor.getDeviceId(), getTurningRotation().getRotations());
   }

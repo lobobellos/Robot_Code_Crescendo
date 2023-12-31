@@ -90,12 +90,6 @@ public class DriveSubsystem extends SubsystemBase {
         gyro.getRotation(),
         modulePositions());
 
-    addChild("frontLeft", m_frontLeft);
-    addChild("frontRight", m_frontRight);
-    addChild("rearLeft", m_rearLeft);
-    addChild("rearRight", m_rearRight);
-    addChild("field", field);
-
     rotationPID.enableContinuousInput(-Math.PI, Math.PI);
 
     var driveTab = Shuffleboard.getTab("drive");
@@ -159,15 +153,15 @@ public class DriveSubsystem extends SubsystemBase {
     // module.kD = kD;
     // }
 
-    var kS = SmartDashboard.getNumber("rotationKS", RotationFF.kS);
-    SmartDashboard.putNumber("rotationKS", kS);
-    var kV = SmartDashboard.getNumber("rotationKV", RotationFF.kV);
-    SmartDashboard.putNumber("rotationKV", kV);
+    // var kS = SmartDashboard.getNumber("rotationKS", RotationFF.kS);
+    // SmartDashboard.putNumber("rotationKS", kS);
+    // var kV = SmartDashboard.getNumber("rotationKV", RotationFF.kV);
+    // SmartDashboard.putNumber("rotationKV", kV);
     
 
-    rotationFF = new SimpleMotorFeedforward(
-        kS,kV
-    );
+    // rotationFF = new SimpleMotorFeedforward(
+    //     kS,kV
+    // );
   }
 
   public Pose2d getPose() {
