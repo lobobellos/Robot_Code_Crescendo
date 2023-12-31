@@ -71,16 +71,14 @@ public class DriveSubsystem extends SubsystemBase {
       RotationPID.kP,
       RotationPID.kI,
       RotationPID.kD);
-  private  SimpleMotorFeedforward rotationFF = new SimpleMotorFeedforward(
-    RotationFF.kS,
-    RotationFF.kV,
-    RotationFF.kA
-  );
+  private final SimpleMotorFeedforward rotationFF = new SimpleMotorFeedforward(
+      RotationFF.kS,
+      RotationFF.kV,
+      RotationFF.kA);
 
   private boolean isDemo = true;
   private Rotation2d rotationSetpoint = new Rotation2d(0);
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
-
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(Gyro gyro) {
@@ -91,6 +89,9 @@ public class DriveSubsystem extends SubsystemBase {
         modulePositions());
 
     rotationPID.enableContinuousInput(-Math.PI, Math.PI);
+    rotationPID.setTolerance(
+        DriveConstants.rotationPostitionTolerance,
+        DriveConstants.rotationVelocityTolerance);
 
     var driveTab = Shuffleboard.getTab("drive");
     driveTab.addDoubleArray("module velocities",
@@ -101,19 +102,17 @@ public class DriveSubsystem extends SubsystemBase {
     driveTab.addDoubleArray("rotation ",
         () -> new double[] {
             rotationSetpoint.getDegrees(),
-            MathUtil.inputModulus(gyro.getRotation().getDegrees(),-180,180)
+            MathUtil.inputModulus(gyro.getRotation().getDegrees(), -180, 180)
         });
-    driveTab.add("rotation pid",rotationPID);
-
+    driveTab.add("rotation pid", rotationPID);
 
     AutoBuilder.configureHolonomic(
-      this::getPose, 
-      this::resetPose, 
-      this::getChassisSpeeds, 
-      this::driveRawFieldRelative, 
-      AutoConstants.pathFollowerConfig, 
-      this
-    );
+        this::getPose,
+        this::resetPose,
+        this::getChassisSpeeds,
+        this::driveRawFieldRelative,
+        AutoConstants.pathFollowerConfig,
+        this);
 
   }
 
@@ -140,7 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("poseY", pose.getY());
     SmartDashboard.putData("field", field);
 
-    //Used for tuning. DO NOT DELETE!
+    // Used for tuning. DO NOT DELETE!
     // var FF = SmartDashboard.getNumber("driveFF", DrivePID.kFF);
     // SmartDashboard.putNumber("driveFF", FF);
     // var kP = SmartDashboard.getNumber("driveP", DrivePID.kP);
@@ -157,10 +156,9 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("rotationKS", kS);
     // var kV = SmartDashboard.getNumber("rotationKV", RotationFF.kV);
     // SmartDashboard.putNumber("rotationKV", kV);
-    
 
     // rotationFF = new SimpleMotorFeedforward(
-    //     kS,kV
+    // kS,kV
     // );
   }
 
@@ -175,28 +173,26 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
     final var multiplier = isDemo ? DriveConstants.kDemoSpeedMetersPerSecond : DriveConstants.kMaxSpeedMetersPerSecond;
-    xSpeed = MathUtil.applyDeadband(xSpeed, 0.05) * multiplier;
-    ySpeed = MathUtil.applyDeadband(ySpeed, 0.05) * multiplier;
+    xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.joystickDeadband) * multiplier;
+    ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.joystickDeadband) * multiplier;
 
-    rot = MathUtil.applyDeadband(rot, 0.05) * OIConstants.rotationMultiplier;
+    rot = MathUtil.applyDeadband(rot, OIConstants.joystickDeadband) * OIConstants.rotationMultiplier;
 
     rotationSetpoint = rotationSetpoint.plus(new Rotation2d(rot));
 
-
-    var rotationOutput = rotationPID.calculate(
-        gyro.getRotation().getRadians(),
-        rotationSetpoint.getRadians())
-        + rotationFF.calculate(gyro.getAngularVelocity().getRadians())
-        ;
+    rotationPID.setSetpoint(rotationSetpoint.getRadians());
+    var rotationOutput = rotationPID.atSetpoint() ? 0
+        : rotationPID.calculate(
+            gyro.getRotation().getRadians())
+            + rotationFF.calculate(gyro.getAngularVelocity().getRadians());
 
     SmartDashboard.putNumber("rotation/pidOutput", rotationOutput);
 
-    chassisSpeeds  = fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotationOutput, gyro.getRotation())
-            : new ChassisSpeeds(xSpeed, ySpeed, rotationOutput);
+    chassisSpeeds = fieldRelative
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotationOutput, gyro.getRotation())
+        : new ChassisSpeeds(xSpeed, ySpeed, rotationOutput);
 
     SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-        
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates,
@@ -209,12 +205,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveRawFieldRelative(ChassisSpeeds speeds) {
-    driveRawRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,gyro.getRotation()));
+    driveRawRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation()));
   }
 
   public void driveRawRobotRelative(ChassisSpeeds speeds) {
-    SwerveModuleState[] swerveModuleStates = 
-    DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
 
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);

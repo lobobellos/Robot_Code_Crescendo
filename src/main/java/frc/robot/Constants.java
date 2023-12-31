@@ -81,7 +81,8 @@ public final class Constants {
       public static final double kV = 0.05;
       public static final double kA = 0.0;
     }
-
+    public static final double rotationPostitionTolerance = 2.0;
+    public static final double rotationVelocityTolerance = 0.0002;
   }
 
   public static final class ModuleConstants {
@@ -120,7 +121,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double deadband = 0.05;
+    public static final double joystickDeadband = 0.05;
 
     public static final double rotationMultiplier = 0.04;
   }
