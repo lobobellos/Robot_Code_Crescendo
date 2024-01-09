@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -23,11 +26,11 @@ public class Gyro extends SubsystemBase {
   }
 
   public Rotation2d getRotation() {
-    return Rotation2d.fromDegrees(imu.getAngle());
+    return Rotation2d.fromDegrees(imu.getAngle(IMUAxis.kYaw));
   }
 
   // returns angular velocity in Rotation2d per second
   public Rotation2d getAngularVelocity() {
-    return Rotation2d.fromDegrees(imu.getRate());
+    return Rotation2d.fromDegrees(imu.getRate(IMUAxis.kYaw));
   }
 }
