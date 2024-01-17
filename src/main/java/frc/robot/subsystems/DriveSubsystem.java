@@ -112,6 +112,7 @@ public class DriveSubsystem extends SubsystemBase {
         this::getChassisSpeeds,
         this::driveRawFieldRelative,
         AutoConstants.pathFollowerConfig,
+        ()->false,
         this);
 
   }
