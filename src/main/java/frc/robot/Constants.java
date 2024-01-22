@@ -86,6 +86,14 @@ public final class Constants {
     public static final double kPModuleDriveController = 1;
   }
 
+  public static final class PneumaticsConstants {
+    public static final int kPneumaticHubPort = 11;
+
+    public static final double maxPressure = 210; //PSI
+
+    public static final int[] shooterDoubleSolenoid = { 0, 1 };
+  }
+
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
   }
