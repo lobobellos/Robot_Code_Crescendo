@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PneumaticsConstants;
 
-public class Pneumatics {
+public class Pneumatics extends SubsystemBase {
   
   private static PneumaticHub pneumaticHub = new PneumaticHub();
 
@@ -32,6 +33,10 @@ public class Pneumatics {
 
   public void setShooterPiston(boolean state){
     shooterSolenoid.set( state ? DoubleSolenoid.Value.kForward : DoubleSolenoid.Value.kReverse );
+  }
+
+  public void toggleShooterPiston(){
+    shooterSolenoid.toggle();
   }
 
 }
