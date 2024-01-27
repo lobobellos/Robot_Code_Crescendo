@@ -127,6 +127,15 @@ public final class Constants {
     public static final int[] shooterDoubleSolenoid = { 0, 1 };
   }
 
+  public static final class HookConstants{
+    public static final int kHookMotorCANID = 13;
+    public static final int limitSwitchTopPort = 0;
+    public static final int limitSwitchBottomPort = 1;
+
+    public static final double deploySpeed = 0.5;
+    public static final double retractSpeed = 0.5;
+  }
+
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double joystickDeadband = 0.05;
