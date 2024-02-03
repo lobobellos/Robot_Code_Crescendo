@@ -6,10 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PDPConstants;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.PDP;
-import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -37,12 +34,18 @@ public class RobotContainer {
   private final DriveSubsystem driveBase = new DriveSubsystem(gyro);
   private final PDP pdp = new PDP(PDPConstants.deviceID);
   private final Pneumatics pneumatics = new Pneumatics();
+  private final Intake intake = new Intake();
+  private final Elevator elevator = new Elevator();
 
   private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
   private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
+  private final Command toggleCompressor = new InstantCommand(pneumatics::toggleCompressor);
+  private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
+  private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
 
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_MechanismController = new CommandXboxController(OIConstants.kMechanismControllerPort);
 
   SendableChooser<Command> autoChooser;
 
@@ -74,22 +77,32 @@ public class RobotContainer {
 
     SmartDashboard.putData(new PathPlannerAuto("lilTurn"));
 
-    m_driverController.b()
-        .onTrue(togglePusher);
+    // Config driver controller buttons
 
     m_driverController.a()
         .onTrue(resetRotation);
-
     m_driverController.leftBumper()
         .and(m_driverController.rightBumper())
         .and(m_driverController.y())
         .onTrue(driveBase.toggleDemoMode());
-
     m_driverController.leftBumper()
         .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(-0.25)));
-
     m_driverController.rightBumper()
         .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
+
+    // Config mechanism controller buttons
+    m_MechanismController.a()
+        .onTrue(togglePusher);
+    m_MechanismController.b()
+        .onTrue(toggleElevatorEnabled);
+    m_MechanismController.x()
+        .onTrue(toggleIntakeEnabled);
+
+    // config multi-controller buttons
+
+    m_driverController.start().or(m_MechanismController.start())
+        .onTrue(toggleCompressor);
+
   }
 
   /**
