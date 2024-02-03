@@ -31,6 +31,10 @@ public class Pneumatics extends SubsystemBase {
     }
   }
 
+  public void toggleCompressor(){
+    setCompressorEnabled(!compressorEnabled());
+  }
+
   public void setShooterPiston(boolean state){
     shooterSolenoid.set( state ? DoubleSolenoid.Value.kForward : DoubleSolenoid.Value.kReverse );
   }
