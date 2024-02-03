@@ -37,8 +37,8 @@ public class RobotContainer {
   private final DriveSubsystem driveBase = new DriveSubsystem(gyro);
   private final PDP pdp = new PDP(PDPConstants.deviceID);
   private final Pneumatics pneumatics = new Pneumatics();
-  
-  private final Command resetRotation = new ParallelCommandGroup(gyro.zero(),driveBase.resetRotation());
+
+  private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
   private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
 
   // The driver's controller
@@ -46,10 +46,12 @@ public class RobotContainer {
 
   SendableChooser<Command> autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
 
-    //register commands
+    // register commands
     NamedCommands.registerCommand("resetRotation", resetRotation);
 
     // Configure the button bindings
@@ -57,19 +59,12 @@ public class RobotContainer {
 
     // Configure default commands
     driveBase.setDefaultCommand(
-        new RunCommand(
-            () ->
-                driveBase.drive(
-                    -m_driverController.getLeftY(),
-                    -m_driverController.getLeftX(),
-                    -m_driverController.getRightX(),
-                    true),
+        new RunCommand(() -> driveBase.drive(
+            -m_driverController.getLeftY(),
+            -m_driverController.getLeftX(),
+            -m_driverController.getRightX(),
+            true),
             driveBase));
-
-    pdp.setDefaultCommand(
-        pdp.updatePDP()
-    );
-
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
@@ -77,24 +72,24 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    SmartDashboard.putData( new PathPlannerAuto("lilTurn"));
+    SmartDashboard.putData(new PathPlannerAuto("lilTurn"));
 
     m_driverController.b()
-    .onTrue(togglePusher);
+        .onTrue(togglePusher);
 
     m_driverController.a()
-    .onTrue(resetRotation);
+        .onTrue(resetRotation);
 
     m_driverController.leftBumper()
-    .and(m_driverController.rightBumper())
-    .and(m_driverController.y())
-    .onTrue(driveBase.toggleDemoMode());
+        .and(m_driverController.rightBumper())
+        .and(m_driverController.y())
+        .onTrue(driveBase.toggleDemoMode());
 
     m_driverController.leftBumper()
-    .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(-0.25)));
+        .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(-0.25)));
 
     m_driverController.rightBumper()
-    .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
+        .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
   }
 
   /**
@@ -103,8 +98,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser == null 
-    ? new PrintCommand("uh... there's no auto, dude") 
-    : autoChooser.getSelected();
+    return autoChooser == null
+        ? new PrintCommand("uh... there's no auto, dude")
+        : autoChooser.getSelected();
   }
 }
