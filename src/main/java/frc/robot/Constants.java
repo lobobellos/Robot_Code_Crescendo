@@ -163,6 +163,8 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kMechanismControllerPort = 1;
+
     public static final double joystickDeadband = 0.05;
 
     public static final double rotationMultiplier = 0.04;
