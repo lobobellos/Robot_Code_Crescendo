@@ -134,7 +134,7 @@ public final class Constants {
      public static final boolean kTopInverted = false;
      public static final boolean kBottomInverted = false;
      
-     public static final double kSpeedPercent = 0.5;
+     public    static final double kSpeedPercent = 0.5;
 
      public static final int freeCurentLimit = 20;
      public static final int stallCurentLimit = 10;
@@ -151,6 +151,14 @@ public final class Constants {
 
     public static final int freeCurentLimit = 20;
     public static final int stallCurentLimit = 10;
+  }
+  public static final class HookConstants{
+    public static final int kHookMotorCANID = 13;
+    public static final int limitSwitchTopPort = 0;
+    public static final int limitSwitchBottomPort = 1;
+
+    public static final double deploySpeed = 0.5;
+    public static final double retractSpeed = 0.5;
   }
 
   public static final class OIConstants {
