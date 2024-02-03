@@ -127,6 +127,32 @@ public final class Constants {
     public static final int[] shooterDoubleSolenoid = { 0, 1 };
   }
 
+  public static final class IntakeConstants{
+     public static final int topMotorID = 12;
+     public static final int BottomMotorID = 13;
+     
+     public static final boolean kTopInverted = false;
+     public static final boolean kBottomInverted = false;
+     
+     public static final double kSpeedPercent = 0.5;
+
+     public static final int freeCurentLimit = 20;
+     public static final int stallCurentLimit = 10;
+  }
+
+  public static final class ElevatorConstants{
+    public static final int topMotorID = 14;
+    public static final int BottomMotorID = 15;
+
+    public static final boolean kTopInverted = false;
+    public static final boolean kBottomInverted = false;
+
+    public static final double kSpeedPercent = 0.5;
+
+    public static final int freeCurentLimit = 20;
+    public static final int stallCurentLimit = 10;
+  }
+
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double joystickDeadband = 0.05;
