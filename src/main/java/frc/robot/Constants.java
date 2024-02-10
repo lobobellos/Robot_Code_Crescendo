@@ -182,4 +182,21 @@ public final class Constants {
       new ReplanningConfig()
     );
   }
+
+  public static final class LedConstants{
+    public static final int numLeds = 40;
+
+    public static final int PWMPort = 0;
+
+    //for configuring the display
+    public static final double hue = 278;
+    public static final double saturation = 0.69;
+    public static final double lightnessBase = 0.25
+
+
+    public static final double lightnessPeriod = 0.2
+    public static final double lightnessFrequency = lightnessPeriod / 1;
+    public static final double ligntnessAmplitude  =  0.15
+
+  }
 }
