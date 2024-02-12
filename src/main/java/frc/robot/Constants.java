@@ -12,191 +12,195 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
 
-  public static final class CurrentLimits{
-    public static final int driveMotorStall = 30;
-    public static final int driveMotorFree = 35;
+	public static final class CurrentLimits {
+		public static final int driveMotorStall = 30;
+		public static final int driveMotorFree = 35;
 
-    public static final int turningMotorStall = 30;
-    public static final int turningMotorFree = 35;
-  }
-  public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 4;
-    public static final int kRearLeftDriveMotorPort = 6;
-    public static final int kFrontRightDriveMotorPort = 2;
-    public static final int kRearRightDriveMotorPort = 8;
+		public static final int turningMotorStall = 30;
+		public static final int turningMotorFree = 35;
+	}
 
-    public static final int kFrontLeftTurningMotorPort = 3;
-    public static final int kRearLeftTurningMotorPort = 5;
-    public static final int kFrontRightTurningMotorPort = 1;
-    public static final int kRearRightTurningMotorPort = 7;
+	public static final class DriveConstants {
+		public static final int kFrontLeftDriveMotorPort = 7;
+		public static final int kRearLeftDriveMotorPort = 5;
+		public static final int kFrontRightDriveMotorPort = 1;
+		public static final int kRearRightDriveMotorPort = 3;
 
-    public static final int kFrontLeftTurningEncoderPorts = 2;
-    public static final int kRearLeftTurningEncoderPorts = 3;
-    public static final int kFrontRightTurningEncoderPorts = 1;
-    public static final int kRearRightTurningEncoderPorts = 0;
+		public static final int kFrontLeftTurningMotorPort = 8;
+		public static final int kRearLeftTurningMotorPort = 6;
+		public static final int kFrontRightTurningMotorPort = 2;
+		public static final int kRearRightTurningMotorPort = 4;
 
-    public static final double kFrontLeftTurningEncoderOffset = -0.344; //3
-    public static final double kRearLeftTurningEncoderOffset = -0.89 ; //5
-    public static final double kFrontRightTurningEncoderOffset = -0.041;//1
-    public static final double kRearRightTurningEncoderOffset = -0.076;//7
+		public static final int kFrontLeftTurningEncoderPorts = 2;
+		public static final int kRearLeftTurningEncoderPorts = 3;
+		public static final int kFrontRightTurningEncoderPorts = 1;
+		public static final int kRearRightTurningEncoderPorts = 0;
 
-    public static final boolean kFrontLeftDriveEncoderReversed = true;
-    public static final boolean kRearLeftDriveEncoderReversed = true;
-    public static final boolean kFrontRightDriveEncoderReversed = false;
-    public static final boolean kRearRightDriveEncoderReversed = true;
+		public static final double kFrontLeftTurningEncoderOffset = -0.344; // 3
+		public static final double kRearLeftTurningEncoderOffset = -0.89; // 5
+		public static final double kFrontRightTurningEncoderOffset = -0.041;// 1
+		public static final double kRearRightTurningEncoderOffset = -0.076;// 7
 
-    public static final double kTrackWidth = 0.45;
-    // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.45;
-    // Distance between front and back wheels on robot
-    public static final SwerveDriveKinematics kDriveKinematics =
-        new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+		public static final boolean kFrontLeftDriveEncoderReversed = true;
+		public static final boolean kRearLeftDriveEncoderReversed = true;
+		public static final boolean kFrontRightDriveEncoderReversed = false;
+		public static final boolean kRearRightDriveEncoderReversed = true;
 
-    public static final boolean kGyroReversed = false;
+		public static final double kTrackWidth = 0.45;
+		// Distance between centers of right and left wheels on robot
+		public static final double kWheelBase = 0.45;
+		// Distance between front and back wheels on robot
+		public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+				new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+				new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+				new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+				new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final double kMaxSpeedMetersPerSecond = 4.2;
-    public static final double kDemoSpeedMetersPerSecond = 1.0;
+		public static final boolean kGyroReversed = false;
 
-    //used for keeping the robot pointed in the right direction
-    public static final class RotationPID{
-      public static final double kP = 4.5;
-      public static final double kI = 0.0;
-      public static final double kD =0.2;
-    }
-    public static final class RotationFF{
-      public static final double kS = 0.05;
-      public static final double kV = 0.05;
-      public static final double kA = 0.0;
-    }
-    public static final double rotationPostitionTolerance = 2.0;
-    public static final double rotationVelocityTolerance = 0.0002;
-  }
+		public static final double kMaxSpeedMetersPerSecond = 4.2;
+		public static final double kDemoSpeedMetersPerSecond = 1.0;
 
-  public static final class ModuleConstants {
+		// used for keeping the robot pointed in the right direction
+		public static final class RotationPID {
+			public static final double kP = 4.5;
+			public static final double kI = 0.0;
+			public static final double kD = 0.2;
+		}
 
-    public static final class TurningPID{
-      public static double kP = 0.8;
-      public static double kI = 0.0;
-      public static double kD = 0.0;
-    }
-    
-    public static final class DrivePID{
-      public static double kFF = 0.22;
-      public static double kP = 0.1;
-      public static double kI = 0.0;
-      public static double kD = 0.05;
-    }
-    
+		public static final class RotationFF {
+			public static final double kS = 0.05;
+			public static final double kV = 0.05;
+			public static final double kA = 0.0;
+		}
 
-    public static final double kMaxModuleAngularSpeed = 100; // rad/s
-    public static final double kMaxModuleAngularAcceleration = 100; // rad/s^2
+		public static final double rotationPostitionTolerance = 2.0;
+		public static final double rotationVelocityTolerance = 0.0002;
+	}
 
-    public static final double kWheelDiameter = 0.095; //meters
-    public static final double driveGearRatio = 1.0/6.75;
+	public static final class ModuleConstants {
 
-    // converting to m
-    public static final double kdrivePositionConversionFactor = driveGearRatio * kWheelDiameter * Math.PI;
-    //converting to m/s
-    public static final double kdriveVelocityConversionFactor = (driveGearRatio /60.0 )* kWheelDiameter * Math.PI;
-    //converting to radians
-    public static final double kTurningConversionFactor = 1.0/12.8;
-  }
+		public static final class TurningPID {
+			public static double kP = 0.8;
+			public static double kI = 0.0;
+			public static double kD = 0.0;
+		}
 
-  public static final class PDPConstants{
-    public static final int deviceID =10;
-  }
+		public static final class DrivePID {
+			public static double kFF = 0.22;
+			public static double kP = 0.1;
+			public static double kI = 0.0;
+			public static double kD = 0.05;
+		}
 
-  public static final class PneumaticsConstants {
-    public static final int kPneumaticHubPort = 11;
+		public static final double kMaxModuleAngularSpeed = 100; // rad/s
+		public static final double kMaxModuleAngularAcceleration = 100; // rad/s^2
 
-    public static final double maxPressure = 210; //PSI
+		public static final double kWheelDiameter = 0.095; // meters
+		public static final double driveGearRatio = 1.0 / 6.75;
 
-    public static final int[] shooterDoubleSolenoid = { 0, 1 };
-  }
+		// converting to m
+		public static final double kdrivePositionConversionFactor = driveGearRatio * kWheelDiameter * Math.PI;
+		// converting to m/s
+		public static final double kdriveVelocityConversionFactor = (driveGearRatio / 60.0) * kWheelDiameter * Math.PI;
+		// converting to radians
+		public static final double kTurningConversionFactor = 1.0 / 12.8;
+	}
 
-  public static final class IntakeConstants{
-     public static final int topMotorID = 12;
-     public static final int BottomMotorID = 13;
-     
-     public static final boolean kTopInverted = false;
-     public static final boolean kBottomInverted = false;
-     
-     public    static final double kSpeedPercent = 0.5;
+	public static final class PDPConstants {
+		public static final int deviceID = 10;
+	}
 
-     public static final int freeCurentLimit = 20;
-     public static final int stallCurentLimit = 10;
-  }
+	public static final class PneumaticsConstants {
+		public static final int kPneumaticHubPort = 11;
 
-  public static final class ElevatorConstants{
-    public static final int topMotorID = 14;
-    public static final int BottomMotorID = 15;
+		public static final double maxPressure = 210; // PSI
 
-    public static final boolean kTopInverted = false;
-    public static final boolean kBottomInverted = false;
+		public static final int[] shooterDoubleSolenoid = { 0, 1 };
+	}
 
-    public static final double kSpeedPercent = 0.5;
+	public static final class IntakeConstants {
+		public static final int topMotorID = 12;
+		public static final int BottomMotorID = 13;
 
-    public static final int freeCurentLimit = 20;
-    public static final int stallCurentLimit = 10;
-  }
-  public static final class HookConstants{
-    public static final int kHookMotorCANID = 13;
-    public static final int limitSwitchTopPort = 0;
-    public static final int limitSwitchBottomPort = 1;
+		public static final boolean kTopInverted = false;
+		public static final boolean kBottomInverted = false;
 
-    public static final double deploySpeed = 0.5;
-    public static final double retractSpeed = 0.5;
-  }
+		public static final double kSpeedPercent = 0.5;
 
-  public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
-    public static final int kMechanismControllerPort = 1;
+		public static final int freeCurentLimit = 20;
+		public static final int stallCurentLimit = 10;
+	}
 
-    public static final double joystickDeadband = 0.05;
+	public static final class ElevatorConstants {
+		public static final int topMotorID = 14;
+		public static final int BottomMotorID = 15;
 
-    public static final double rotationMultiplier = 0.04;
-  }
+		public static final boolean kTopInverted = false;
+		public static final boolean kBottomInverted = false;
 
-  public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
+		public static final double kSpeedPercent = 0.5;
 
-    // Constraint for the motion profiled robot angle controller
-    public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-      new PIDConstants(0.5, 0, 0, 0), // translation constants
-      new PIDConstants(4.5, 0, 0), //rotation constants
-      AutoConstants.kMaxSpeedMetersPerSecond, // max velocity
-      Math.hypot(DriveConstants.kTrackWidth/2, DriveConstants.kWheelBase/2),
-      new ReplanningConfig()
-    );
-  }
+		public static final int freeCurentLimit = 20;
+		public static final int stallCurentLimit = 10;
+	}
 
-  public static final class LedConstants{
-    public static final int numLeds = 40;
+	public static final class HookConstants {
+		public static final int kHookMotorCANID = 13;
+		public static final int limitSwitchTopPort = 0;
+		public static final int limitSwitchBottomPort = 1;
 
-    public static final int PWMPort = 0;
+		public static final double deploySpeed = 0.5;
+		public static final double retractSpeed = 0.5;
+	}
 
-    //for configuring the display
-    public static final double hue = 278;
-    public static final double saturation = 0.69;
-    public static final double lightnessBase = 0.25
+	public static final class OIConstants {
+		public static final int kDriverControllerPort = 0;
+		public static final int kMechanismControllerPort = 1;
 
+		public static final double joystickDeadband = 0.05;
 
-    public static final double lightnessPeriod = 0.2
-    public static final double lightnessFrequency = lightnessPeriod / 1;
-    public static final double ligntnessAmplitude  =  0.15
+		public static final double rotationMultiplier = 0.04;
+	}
 
-  }
+	public static final class AutoConstants {
+		public static final double kMaxSpeedMetersPerSecond = 3;
+
+		// Constraint for the motion profiled robot angle controller
+		public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+				new PIDConstants(0.5, 0, 0, 0), // translation constants
+				new PIDConstants(4.5, 0, 0), // rotation constants
+				AutoConstants.kMaxSpeedMetersPerSecond, // max velocity
+				Math.hypot(DriveConstants.kTrackWidth / 2, DriveConstants.kWheelBase / 2),
+				new ReplanningConfig());
+	}
+
+	public static final class LedConstants {
+		public static final int numLeds = 40;
+
+		public static final int PWMPort = 0;
+
+		// for configuring the display
+		public static final int hue = 278 / 2;
+		public static final int saturation = (int) 0.69 * 255;
+		public static final double valueBase = (int) 0.4 * 255;
+
+		public static final double valuePeriod = 0.2;
+		public static final double valueFrequency = valuePeriod / 1;
+		public static final double valueAmplitude = 10;
+
+	}
 }
