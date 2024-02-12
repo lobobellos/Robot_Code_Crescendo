@@ -23,8 +23,8 @@ public class Pneumatics extends SubsystemBase {
     return pneumaticHub.getCompressor();
   }
 
-  public void setCompressorEnabled(boolean state){
-    if(state){
+  public void setCompressorEnabled(boolean enable){
+    if(enable){
       pneumaticHub.enableCompressorAnalog(0, PneumaticsConstants.maxPressure);
     }else{
       pneumaticHub.disableCompressor();
