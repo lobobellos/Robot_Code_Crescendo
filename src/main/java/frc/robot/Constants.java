@@ -127,6 +127,31 @@ public final class Constants {
     public static final int[] shooterDoubleSolenoid = { 0, 1 };
   }
 
+  public static final class IntakeConstants{
+     public static final int topMotorID = 12;
+     public static final int BottomMotorID = 13;
+     
+     public static final boolean kTopInverted = false;
+     public static final boolean kBottomInverted = false;
+     
+     public    static final double kSpeedPercent = 0.5;
+
+     public static final int freeCurentLimit = 20;
+     public static final int stallCurentLimit = 10;
+  }
+
+  public static final class ElevatorConstants{
+    public static final int topMotorID = 14;
+    public static final int BottomMotorID = 15;
+
+    public static final boolean kTopInverted = false;
+    public static final boolean kBottomInverted = false;
+
+    public static final double kSpeedPercent = 0.5;
+
+    public static final int freeCurentLimit = 20;
+    public static final int stallCurentLimit = 10;
+  }
   public static final class HookConstants{
     public static final int kHookMotorCANID = 13;
     public static final int limitSwitchTopPort = 0;
@@ -138,6 +163,8 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kMechanismControllerPort = 1;
+
     public static final double joystickDeadband = 0.05;
 
     public static final double rotationMultiplier = 0.04;
@@ -154,5 +181,22 @@ public final class Constants {
       Math.hypot(DriveConstants.kTrackWidth/2, DriveConstants.kWheelBase/2),
       new ReplanningConfig()
     );
+  }
+
+  public static final class LedConstants{
+    public static final int numLeds = 40;
+
+    public static final int PWMPort = 0;
+
+    //for configuring the display
+    public static final double hue = 278;
+    public static final double saturation = 0.69;
+    public static final double lightnessBase = 0.25
+
+
+    public static final double lightnessPeriod = 0.2
+    public static final double lightnessFrequency = lightnessPeriod / 1;
+    public static final double ligntnessAmplitude  =  0.15
+
   }
 }
