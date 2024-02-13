@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.PDPConstants;
 import frc.robot.subsystems.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -20,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /*
@@ -32,7 +32,9 @@ public class RobotContainer {
   // The robot's subsystems
   private final Gyro gyro = new Gyro();
   private final DriveSubsystem driveBase = new DriveSubsystem(gyro);
-  private final PDP pdp = new PDP(PDPConstants.deviceID);
+  private final Hook hook = new Hook();
+  private final Leds leds = new Leds();
+
   private final Pneumatics pneumatics = new Pneumatics();
   private final Intake intake = new Intake();
   private final Elevator elevator = new Elevator();
@@ -42,9 +44,15 @@ public class RobotContainer {
   private final Command toggleCompressor = new InstantCommand(pneumatics::toggleCompressor);
   private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
   private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
+  private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled, toggleElevatorEnabled);
+  private final Command raiseHook = hook.raiseHook();
+  private final Command lowerHook = hook.lowerHook();
+  private final Command runHookRaw = hook.runRaw();
+  private final Command retractHookRaw = hook.retractRaw();
 
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  // the mechanism controller
   CommandXboxController m_MechanismController = new CommandXboxController(OIConstants.kMechanismControllerPort);
 
   SendableChooser<Command> autoChooser;
@@ -71,6 +79,8 @@ public class RobotContainer {
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
+
+    leds.start();
   }
 
   private void configureButtonBindings() {
@@ -94,9 +104,17 @@ public class RobotContainer {
     m_MechanismController.a()
         .onTrue(togglePusher);
     m_MechanismController.b()
-        .onTrue(toggleElevatorEnabled);
-    m_MechanismController.x()
-        .onTrue(toggleIntakeEnabled);
+        .onTrue(toggleIntakeAndElevator);
+
+
+    m_MechanismController.rightBumper()
+    .onTrue(raiseHook);
+    m_MechanismController.leftBumper()
+    .onTrue(lowerHook);
+    m_MechanismController.povDown()
+    .onTrue(retractHookRaw);
+    m_MechanismController.povUp()
+    .onTrue(runHookRaw);
 
     // config multi-controller buttons
 
