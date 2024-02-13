@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LedConstants;
 
-class Leds extends SubsystemBase{
+public class Leds extends SubsystemBase{
 
   AddressableLED m_strip = new AddressableLED(LedConstants.PWMPort);
 
@@ -22,6 +22,16 @@ class Leds extends SubsystemBase{
     m_strip.start();
 
     time.start();
+  }
+
+  public void start(){
+    m_strip.start();
+    time.restart();
+  }
+
+  public void stop(){
+    m_strip.stop();
+    time.stop();
   }
 
   public RunCommand run(){
