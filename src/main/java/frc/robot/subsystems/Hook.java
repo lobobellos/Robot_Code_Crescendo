@@ -48,11 +48,34 @@ public class Hook extends SubsystemBase {
     );
   }
 
-  public Command RaiseHook(){
+  public Command raiseHook(){
     return runUntil(this::topSwitchPressed, false);
   }
-  public Command LowerHook(){
+  public Command lowerHook(){
     return runUntil(this::bottomSwitchPressed, false);
   }
+
+public Command runRaw(){
+  return new RunCommand(()->{
+    m_hookMotor.set(-HookConstants.retractSpeed);
+  },
+  this){
+    @Override
+    public void end(boolean interrupted) {
+      m_hookMotor.set(0);
+    }
+  };
+}
+
+public Command retractRaw(){
+  return new RunCommand(()->{
+    m_hookMotor.set(HookConstants.retractSpeed);
+  },this){
+    @Override
+    public void end(boolean interrupted) {
+      m_hookMotor.set(0);
+    }
+  };
+}
 
 }
