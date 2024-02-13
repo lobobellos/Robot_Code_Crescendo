@@ -105,8 +105,6 @@ public class RobotContainer {
         .onTrue(togglePusher);
     m_MechanismController.b()
         .onTrue(toggleIntakeAndElevator);
-
-
     m_MechanismController.rightBumper()
     .onTrue(raiseHook);
     m_MechanismController.leftBumper()
