@@ -159,7 +159,7 @@ public final class Constants {
 	}
 
 	public static final class HookConstants {
-		public static final int kHookMotorCANID = 13;
+		public static final int kHookMotorCANID = 16;
 		public static final int limitSwitchTopPort = 0;
 		public static final int limitSwitchBottomPort = 1;
 
