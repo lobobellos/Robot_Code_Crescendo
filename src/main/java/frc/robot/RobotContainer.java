@@ -41,7 +41,8 @@ public class RobotContainer {
 
   private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
   private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
-  private final Command toggleCompressor = new InstantCommand(pneumatics::toggleCompressor);
+  private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
+  private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
   private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
   private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
   private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled, toggleElevatorEnabled);
@@ -117,7 +118,13 @@ public class RobotContainer {
     // config multi-controller buttons
 
     m_driverController.start().or(m_MechanismController.start())
-        .onTrue(toggleCompressor);
+        .onTrue(compressorEnable);
+
+    m_driverController.back().or(m_MechanismController.back())
+        .onTrue(compressorDisable);
+    
+
+
 
   }
 
