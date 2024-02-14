@@ -49,17 +49,17 @@ public final class Constants {
 		public static final int kFrontRightTurningEncoderPorts = 1;
 		public static final int kRearRightTurningEncoderPorts = 0;
 
-		public static final double kFrontLeftTurningEncoderOffset = -0.344; // 3
-		public static final double kRearLeftTurningEncoderOffset = -0.89; // 5
-		public static final double kFrontRightTurningEncoderOffset = -0.041;// 1
-		public static final double kRearRightTurningEncoderOffset = -0.076;// 7
+		public static final double kFrontLeftTurningEncoderOffset = -0.063; // 8
+		public static final double kRearLeftTurningEncoderOffset = -0.048; // 6
+		public static final double kFrontRightTurningEncoderOffset = -0.885;// 2
+		public static final double kRearRightTurningEncoderOffset = -0.338;// 4
 
-		public static final boolean kFrontLeftDriveEncoderReversed = true;
+		public static final boolean kFrontLeftDriveEncoderReversed = false;
 		public static final boolean kRearLeftDriveEncoderReversed = true;
 		public static final boolean kFrontRightDriveEncoderReversed = false;
-		public static final boolean kRearRightDriveEncoderReversed = true;
+		public static final boolean kRearRightDriveEncoderReversed = false;
 
-		public static final double kTrackWidth = 0.45;
+		public static final double kTrackWidth = 0.65;
 		// Distance between centers of right and left wheels on robot
 		public static final double kWheelBase = 0.45;
 		// Distance between front and back wheels on robot
@@ -127,7 +127,7 @@ public final class Constants {
 	public static final class PneumaticsConstants {
 		public static final int kPneumaticHubPort = 11;
 
-		public static final double maxPressure = 210; // PSI
+		public static final double maxPressure = 110; // PSI
 
 		public static final int[] shooterDoubleSolenoid = { 0, 1 };
 	}
@@ -137,7 +137,7 @@ public final class Constants {
 		public static final int BottomMotorID = 13;
 
 		public static final boolean kTopInverted = false;
-		public static final boolean kBottomInverted = false;
+		public static final boolean kBottomInverted = true;
 
 		public static final double kSpeedPercent = 0.5;
 
@@ -149,7 +149,7 @@ public final class Constants {
 		public static final int topMotorID = 14;
 		public static final int BottomMotorID = 15;
 
-		public static final boolean kTopInverted = false;
+		public static final boolean kTopInverted = true;
 		public static final boolean kBottomInverted = false;
 
 		public static final double kSpeedPercent = 0.5;
@@ -171,7 +171,7 @@ public final class Constants {
 		public static final int kDriverControllerPort = 0;
 		public static final int kMechanismControllerPort = 1;
 
-		public static final double joystickDeadband = 0.05;
+		public static final double joystickDeadband = 0.1;
 
 		public static final double rotationMultiplier = 0.04;
 	}
