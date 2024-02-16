@@ -203,4 +203,16 @@ public final class Constants {
 		public static final double valueAmplitude = 10;
 
 	}
+
+	public static final class LimelightConstants{
+		public static final double defaultReturnValue = -1;
+		public static final double alignmentTolerance = 5;
+
+		public static final double targetHeight = 0.7;
+		public static final double targetWidth = 0.5;
+		public static final double targetFloorHeight = 0.0;
+	
+		public static final double mountingAngleDegrees = 0.0;
+		public static final double mountingHeightInches = 0.0;
+	}
 }
