@@ -5,6 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+// stolen from "https://github.com/frc2357/FRC-2024/blob/main/robotbase/src/main/java/frc/robot/subsystems/Limelight.java"
+// by @bakedPotatoLord
+//thanks! 😉
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
