@@ -34,19 +34,16 @@ public class Leds extends SubsystemBase{
     time.stop();
   }
 
-  public RunCommand run(){
-    return new RunCommand(() -> {
-      for(int i = 0; i < m_buffer.getLength(); i++){
-        setHSL(
-          i,
-          LedConstants.hue,
-          LedConstants.saturation,
-          (int)  (LedConstants.valueBase + Math.sin(time.get() * LedConstants.valueFrequency) * LedConstants.valueAmplitude )
-        );
-      }
-    },
-    this);
-  }
+  public void periodic(){
+    for(int i = 0; i < m_buffer.getLength(); i++){
+      setHSL(
+        i,
+        LedConstants.hue,
+        LedConstants.saturation,
+        (int)  (LedConstants.valueBase + Math.sin(time.get() * LedConstants.valueFrequency) * LedConstants.valueAmplitude )
+      );
+    }
+  };
 
   private void setHSL(int index, int hue, int s, int l) {
     int m_v = l +(s * Math.min(l,1-l));
