@@ -117,13 +117,11 @@ public class RobotContainer {
 
     // config multi-controller buttons
 
-    m_driverController.start().or(m_MechanismController.start())
+    m_driverController.rightTrigger(0.5)
         .onTrue(compressorEnable);
 
-    m_driverController.back().or(m_MechanismController.back())
+    m_driverController.leftTrigger(0.5)
         .onTrue(compressorDisable);
-    
-
 
 
   }
