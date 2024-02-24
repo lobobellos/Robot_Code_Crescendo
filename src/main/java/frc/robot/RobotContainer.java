@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -41,6 +42,7 @@ public class RobotContainer {
 
   private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
   private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
+  private final Command pusherOneShot = Commands.parallel(togglePusher,Commands.waitSeconds(0.5),togglePusher);
   private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
   private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
   private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
@@ -65,6 +67,9 @@ public class RobotContainer {
 
     // register commands
     NamedCommands.registerCommand("resetRotation", resetRotation);
+    NamedCommands.registerCommand("toggleIntakeAndElevator", toggleIntakeAndElevator);
+    NamedCommands.registerCommand("togglePusher", togglePusher);
+    NamedCommands.registerCommand("pusherOneShot", pusherOneShot);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -86,7 +91,8 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    SmartDashboard.putData(new PathPlannerAuto("lilTurn"));
+    SmartDashboard.putData(new PathPlannerAuto("ampStart"));
+    SmartDashboard.putData(new PathPlannerAuto("rollOut"));
 
     // Config driver controller buttons
 
