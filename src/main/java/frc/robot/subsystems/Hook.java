@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +21,7 @@ public class Hook extends SubsystemBase {
   private final DigitalInput m_limitSwitchBottom = new DigitalInput(HookConstants.limitSwitchBottomPort);
 
   public Hook() {
-
+    setDefaultCommand(new RunCommand(this::stop,this));
   }
 
   public boolean topSwitchPressed() {
@@ -55,27 +56,16 @@ public class Hook extends SubsystemBase {
     return runUntil(this::bottomSwitchPressed, false);
   }
 
-public Command runRaw(){
-  return new RunCommand(()->{
-    m_hookMotor.set(-HookConstants.retractSpeed);
-  },
-  this){
-    @Override
-    public void end(boolean interrupted) {
-      m_hookMotor.set(0);
-    }
-  };
+  public void runRaw(){
+      m_hookMotor.set(-HookConstants.retractSpeed);
+  }
+
+  public void retractRaw(){
+      m_hookMotor.set(HookConstants.retractSpeed);
+  }
+
+  public void stop(){
+    m_hookMotor.stopMotor();
+  }
 }
 
-public Command retractRaw(){
-  return new RunCommand(()->{
-    m_hookMotor.set(HookConstants.retractSpeed);
-  },this){
-    @Override
-    public void end(boolean interrupted) {
-      m_hookMotor.set(0);
-    }
-  };
-}
-
-}

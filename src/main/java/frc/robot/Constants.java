@@ -8,6 +8,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
@@ -188,19 +189,49 @@ public final class Constants {
 				new ReplanningConfig());
 	}
 
+	public static final class AutoAlignmentConstants{
+		public static double positionSetpointX = 0;
+		public static double positionSetpointY =1.323;
+		public static Rotation2d rotationSetpoint = Rotation2d.fromRotations(0);
+
+		public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(5);
+		public static double positionTolerance = 0.001;
+		public static final class MovementPID{
+			public static final double kP = 0.0;
+			public static final double kI = 0.0;
+			public static final double kD = 0.0;
+		}
+		public static final class MovementFF{
+			public static final double kS = 0.0;
+			public static final double kV = 0.0;
+			public static final double kA = 0.0;
+		}
+
+		public static final class RotationPID{
+			public static final double kP = 0.0;
+			public static final double kI = 0.0;
+			public static final double kD = 0.0;
+		}
+		public static final class RotationFF{
+			public static final double kS = 0.5;
+			public static final double kV = 0.5;
+			public static final double kA = 0.0;
+		}
+	}
+
 	public static final class LedConstants {
-		public static final int numLeds = 40;
+		public static final int numLeds = 200;
 
 		public static final int PWMPort = 0;
 
 		// for configuring the display
-		public static final int hue = 278 / 2;
+		public static final int hue = 319;
 		public static final int saturation = (int) 0.69 * 255;
-		public static final double valueBase = (int) 0.4 * 255;
+		public static final double valueBase = 40;
 
 		public static final double valuePeriod = 0.2;
 		public static final double valueFrequency = valuePeriod / 1;
-		public static final double valueAmplitude = 10;
+		public static final double valueAmplitude = 2;
 
 	}
 

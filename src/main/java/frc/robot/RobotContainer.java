@@ -5,12 +5,14 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AlignToAmp;
 import frc.robot.subsystems.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,6 +37,8 @@ public class RobotContainer {
   private final Hook hook = new Hook();
   private final Leds leds = new Leds();
 
+  private final Limelight limelight = new Limelight("limelight");
+
   private final Pneumatics pneumatics = new Pneumatics();
   private final Intake intake = new Intake();
   private final Elevator elevator = new Elevator();
@@ -48,8 +52,10 @@ public class RobotContainer {
   private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled, toggleElevatorEnabled);
   private final Command raiseHook = hook.raiseHook();
   private final Command lowerHook = hook.lowerHook();
-  private final Command runHookRaw = hook.runRaw();
-  private final Command retractHookRaw = hook.retractRaw();
+  private final Command runHookRaw = new RunCommand( hook::runRaw);
+  private final Command retractHookRaw = new RunCommand( hook::retractRaw );
+
+  private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
 
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -82,6 +88,8 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     leds.start();
+
+    CameraServer.startAutomaticCapture(0);
   }
 
   private void configureButtonBindings() {
@@ -101,19 +109,22 @@ public class RobotContainer {
     m_driverController.rightBumper()
         .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
 
+    m_driverController.b()
+        .onTrue(alignToAmp);
+
     // Config mechanism controller buttons
-    m_MechanismController.a()
+    m_MechanismController.x()
         .onTrue(togglePusher);
     m_MechanismController.b()
         .onTrue(toggleIntakeAndElevator);
-    m_MechanismController.rightBumper()
-    .onTrue(raiseHook);
-    m_MechanismController.leftBumper()
-    .onTrue(lowerHook);
+    // m_MechanismController.rightBumper()
+    // .onTrue(raiseHook);
+    // m_MechanismController.leftBumper()
+    // .onTrue(lowerHook);
     m_MechanismController.povDown()
-    .onTrue(retractHookRaw);
+    .whileTrue(retractHookRaw);
     m_MechanismController.povUp()
-    .onTrue(runHookRaw);
+    .whileTrue(runHookRaw);
 
     // config multi-controller buttons
 

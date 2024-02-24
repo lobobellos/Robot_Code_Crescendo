@@ -17,8 +17,9 @@ public class Leds extends SubsystemBase{
   public Leds(){
     m_strip.setLength(m_buffer.getLength());
 
-    m_strip.setData(m_buffer);
-    m_strip.start();
+    //m_strip.setData(m_buffer);
+    //m_strip.start();
+
 
     time.start();
   }
@@ -34,14 +35,18 @@ public class Leds extends SubsystemBase{
   }
 
   public void periodic(){
-    for(int i = 0; i < m_buffer.getLength(); i++){
-      setHSL(
-        i,
-        LedConstants.hue,
-        LedConstants.saturation,
-        (int)  (LedConstants.valueBase + Math.sin(time.get() * LedConstants.valueFrequency) * LedConstants.valueAmplitude )
-      );
-    }
+    // for(int i = 0; i < m_buffer.getLength(); i++){
+    //   int val = (int)  (LedConstants.valueBase + Math.abs(Math.sin(time.get() * LedConstants.valueFrequency+i)) * LedConstants.valueAmplitude );
+    //   m_buffer.setHSV(
+    //     i,
+    //     LedConstants.hue,
+    //     100,
+    //     val
+    //   );
+    //   //m_buffer.setRGB(i,(int)time.get()%256,0, (int)time.get()%256);
+    //   System.out.println("LED "+time.get()+" "+val);
+    // }
+    // m_strip.setData(m_buffer);
   };
 
   private void setHSL(int index, int hue, int s, int l) {
