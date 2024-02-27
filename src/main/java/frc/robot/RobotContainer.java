@@ -52,8 +52,6 @@ public class RobotContainer {
   private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
   private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
   private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled, toggleElevatorEnabled);
-  private final Command raiseHook = hook.raiseHook();
-  private final Command lowerHook = hook.lowerHook();
   private final Command runHookRaw = new RunCommand( hook::runRaw);
   private final Command retractHookRaw = new RunCommand( hook::retractRaw );
 
