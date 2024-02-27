@@ -5,17 +5,18 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase {
 
-  public static final AHRS ahrs = new AHRS(SerialPort.Port.kMXP); 
+  public static final AHRS ahrs = new AHRS(SPI.Port.kMXP); 
 
   public Gyro() {
     //recalibrate();
+    
     addChild("imu", ahrs);
   }
 
