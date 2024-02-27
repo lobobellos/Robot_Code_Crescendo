@@ -32,125 +32,128 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems
-  private final Gyro gyro = new Gyro();
-  private final DriveSubsystem driveBase = new DriveSubsystem(gyro);
-  private final Hook hook = new Hook();
-  private final Leds leds = new Leds();
+    // The robot's subsystems
+    private final Gyro gyro = new Gyro();
+    private final DriveSubsystem driveBase = new DriveSubsystem(gyro);
+    private final Hook hook = new Hook();
+    private final Leds leds = new Leds();
 
-  private final Limelight limelight = new Limelight("limelight");
+    private final Limelight limelight = new Limelight("limelight");
 
-  private final Pneumatics pneumatics = new Pneumatics();
-  private final Intake intake = new Intake();
-  private final Elevator elevator = new Elevator();
+    private final Pneumatics pneumatics = new Pneumatics();
+    private final Intake intake = new Intake();
+    private final Elevator elevator = new Elevator();
 
-  private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
-  private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
-  private final Command pusherOneShot = Commands.parallel(togglePusher,Commands.waitSeconds(0.5),togglePusher);
-  private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
-  private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
-  private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
-  private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
-  private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled, toggleElevatorEnabled);
-  private final Command raiseHook = hook.raiseHook();
-  private final Command lowerHook = hook.lowerHook();
-  private final Command runHookRaw = new RunCommand( hook::runRaw);
-  private final Command retractHookRaw = new RunCommand( hook::retractRaw );
+    private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
+    private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
+    private final Command pusherOneShot = Commands.sequence(
+            new InstantCommand(pneumatics::toggleShooterPiston),
+            Commands.waitSeconds(0.5),
+            new InstantCommand(pneumatics::toggleShooterPiston));
+    private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
+    private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
+    private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
+    private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
+    private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled,
+            toggleElevatorEnabled);
+    private final Command raiseHook = hook.raiseHook();
+    private final Command lowerHook = hook.lowerHook();
+    private final Command runHookRaw = new RunCommand(hook::runRaw);
+    private final Command retractHookRaw = new RunCommand(hook::retractRaw);
 
-  private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
+    private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
 
-  // The driver's controller
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  // the mechanism controller
-  CommandXboxController m_MechanismController = new CommandXboxController(OIConstants.kMechanismControllerPort);
+    // The driver's controller
+    CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+    // the mechanism controller
+    CommandXboxController m_MechanismController = new CommandXboxController(OIConstants.kMechanismControllerPort);
 
-  SendableChooser<Command> autoChooser;
+    SendableChooser<Command> autoChooser;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
 
-    // register commands
-    NamedCommands.registerCommand("resetRotation", resetRotation);
-    NamedCommands.registerCommand("toggleIntakeAndElevator", toggleIntakeAndElevator);
-    NamedCommands.registerCommand("togglePusher", togglePusher);
-    NamedCommands.registerCommand("pusherOneShot", pusherOneShot);
+        // register commands
+        NamedCommands.registerCommand("resetRotation", resetRotation);
+        NamedCommands.registerCommand("toggleIntakeAndElevator", toggleIntakeAndElevator);
+        NamedCommands.registerCommand("togglePusher", togglePusher);
+        NamedCommands.registerCommand("pusherOneShot", pusherOneShot);
 
-    // Configure the button bindings
-    configureButtonBindings();
+        // Configure the button bindings
+        configureButtonBindings();
 
-    // Configure default commands
-    driveBase.setDefaultCommand(
-        new RunCommand(() -> driveBase.drive(
-            -m_driverController.getLeftY(),
-            -m_driverController.getLeftX(),
-            -m_driverController.getRightX(),
-            true),
-            driveBase));
+        // Configure default commands
+        driveBase.setDefaultCommand(
+                new RunCommand(() -> driveBase.drive(
+                        -m_driverController.getLeftY(),
+                        -m_driverController.getLeftX(),
+                        -m_driverController.getRightX(),
+                        true),
+                        driveBase));
 
-    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-    SmartDashboard.putData("Auto Mode", autoChooser);
+        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+        SmartDashboard.putData("Auto Mode", autoChooser);
 
-    leds.start();
+        leds.start();
 
-    CameraServer.startAutomaticCapture(0);
-  }
+        CameraServer.startAutomaticCapture(0);
+    }
 
-  private void configureButtonBindings() {
+    private void configureButtonBindings() {
 
-    SmartDashboard.putData(new PathPlannerAuto("ampStart"));
-    SmartDashboard.putData(new PathPlannerAuto("rollOut"));
+        SmartDashboard.putData(new PathPlannerAuto("ampStart"));
+        SmartDashboard.putData(new PathPlannerAuto("rollOut"));
 
-    // Config driver controller buttons
+        // Config driver controller buttons
 
-    m_driverController.a()
-        .onTrue(resetRotation);
-    m_driverController.leftBumper()
-        .and(m_driverController.rightBumper())
-        .and(m_driverController.y())
-        .onTrue(driveBase.toggleDemoMode());
-    m_driverController.leftBumper()
-        .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(-0.25)));
-    m_driverController.rightBumper()
-        .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
+        m_driverController.a()
+                .onTrue(resetRotation);
+        m_driverController.leftBumper()
+                .and(m_driverController.rightBumper())
+                .and(m_driverController.y())
+                .onTrue(driveBase.toggleDemoMode());
+        m_driverController.leftBumper()
+                .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(-0.25)));
+        m_driverController.rightBumper()
+                .onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
 
-    m_driverController.b()
-        .onTrue(alignToAmp);
+        m_driverController.b()
+                .onTrue(alignToAmp);
 
-    // Config mechanism controller buttons
-    m_MechanismController.x()
-        .onTrue(togglePusher);
-    m_MechanismController.b()
-        .onTrue(toggleIntakeAndElevator);
-    // m_MechanismController.rightBumper()
-    // .onTrue(raiseHook);
-    // m_MechanismController.leftBumper()
-    // .onTrue(lowerHook);
-    m_MechanismController.povDown()
-    .whileTrue(retractHookRaw);
-    m_MechanismController.povUp()
-    .whileTrue(runHookRaw);
+        // Config mechanism controller buttons
+        m_MechanismController.x()
+                .onTrue(togglePusher);
+        m_MechanismController.b()
+                .onTrue(toggleIntakeAndElevator);
+        // m_MechanismController.rightBumper()
+        // .onTrue(raiseHook);
+        // m_MechanismController.leftBumper()
+        // .onTrue(lowerHook);
+        m_MechanismController.povDown()
+                .whileTrue(retractHookRaw);
+        m_MechanismController.povUp()
+                .whileTrue(runHookRaw);
 
-    // config multi-controller buttons
+        // config multi-controller buttons
 
-    m_driverController.rightTrigger(0.5)
-        .onTrue(compressorEnable);
+        m_driverController.rightTrigger(0.5)
+                .onTrue(compressorEnable);
 
-    m_driverController.leftTrigger(0.5)
-        .onTrue(compressorDisable);
+        m_driverController.leftTrigger(0.5)
+                .onTrue(compressorDisable);
 
+    }
 
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser == null
-        ? new PrintCommand("uh... there's no auto, dude")
-        : autoChooser.getSelected();
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser == null
+                ? new PrintCommand("uh... there's no auto, dude")
+                : autoChooser.getSelected();
+    }
 }
