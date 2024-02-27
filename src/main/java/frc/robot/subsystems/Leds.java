@@ -35,25 +35,17 @@ public class Leds extends SubsystemBase{
   }
 
   public void periodic(){
-    // for(int i = 0; i < m_buffer.getLength(); i++){
-    //   int val = (int)  (LedConstants.valueBase + Math.abs(Math.sin(time.get() * LedConstants.valueFrequency+i)) * LedConstants.valueAmplitude );
-    //   m_buffer.setHSV(
-    //     i,
-    //     LedConstants.hue,
-    //     100,
-    //     val
-    //   );
-    //   //m_buffer.setRGB(i,(int)time.get()%256,0, (int)time.get()%256);
-    //   System.out.println("LED "+time.get()+" "+val);
-    // }
-    // m_strip.setData(m_buffer);
+    for(int i = 0; i < m_buffer.getLength(); i++){
+      int val = (int)  (LedConstants.valueBase + Math.abs(Math.sin(time.get() * LedConstants.valueFrequency+i)) * LedConstants.valueAmplitude );
+      m_buffer.setHSV(
+        i,
+        LedConstants.hue,
+        100,
+        val
+      );
+      //m_buffer.setRGB(i,(int)time.get()%256,0, (int)time.get()%256);
+      System.out.println("LED "+time.get()+" "+val);
+    }
+    m_strip.setData(m_buffer);
   };
-
-  private void setHSL(int index, int hue, int s, int l) {
-    int m_v = l +(s * Math.min(l,1-l));
-    int m_s = (m_v==0) ? 0 : 2*(1-m_v/m_v);
-
-    m_buffer.setHSV(index, hue, m_s, m_v );
-
-  }
 }
