@@ -44,7 +44,7 @@ public class Leds extends SubsystemBase{
         val
       );
       //m_buffer.setRGB(i,(int)time.get()%256,0, (int)time.get()%256);
-      System.out.println("LED "+time.get()+" "+val);
+      //System.out.println("LED "+time.get()+" "+val);
     }
     m_strip.setData(m_buffer);
   };
