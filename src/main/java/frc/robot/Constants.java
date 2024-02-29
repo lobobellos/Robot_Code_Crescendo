@@ -174,7 +174,7 @@ public final class Constants {
 
 		public static final double joystickDeadband = 0.1;
 
-		public static final double rotationMultiplier = 0.04;
+		public static final double rotationMultiplier = 0.01;
 	}
 
 	public static final class AutoConstants {
