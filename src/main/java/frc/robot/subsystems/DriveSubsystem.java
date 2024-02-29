@@ -179,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     rot = MathUtil.applyDeadband(rot, OIConstants.joystickDeadband) * OIConstants.rotationMultiplier;
 
-    rotationSetpoint = rotationSetpoint.plus(new Rotation2d(rot));
+    rotationSetpoint = rotationSetpoint.plus(Rotation2d.fromRotations(rot));
 
     rotationPID.setSetpoint(rotationSetpoint.getRadians());
     var rotationOutput = rotationPID.atSetpoint() ? 0
