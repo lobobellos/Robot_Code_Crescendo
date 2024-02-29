@@ -20,6 +20,15 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotorTop.setInverted(IntakeConstants.kTopInverted);
     intakeMotorBottom.setInverted(IntakeConstants.kBottomInverted);
+    intakeMotorTop.setSmartCurrentLimit(
+      IntakeConstants.stallCurentLimit,
+      IntakeConstants.freeCurentLimit
+    );
+    intakeMotorBottom.setSmartCurrentLimit(
+      IntakeConstants.stallCurentLimit,
+      IntakeConstants.freeCurentLimit
+    );
+
     this.setDefaultCommand(new RunCommand(this::run, this));
   }
 
