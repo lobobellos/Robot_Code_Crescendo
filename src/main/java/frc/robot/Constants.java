@@ -280,6 +280,7 @@ public final class Constants {
 // 700, 700 : in but funky
 // 700, 700 : in but funky
 // 700, 700 : in but funky
-// 650, 700 : 
+// 650, 700 : easy in
+
 
 
