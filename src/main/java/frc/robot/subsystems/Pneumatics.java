@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PneumaticsConstants;
 
@@ -20,7 +21,7 @@ public class Pneumatics extends SubsystemBase {
 
   public Pneumatics(){
     enableCompressor();
-    setShooterPiston(true);
+    setShooterPiston(false);
   }
 
   public boolean compressorEnabled(){
@@ -39,8 +40,16 @@ public class Pneumatics extends SubsystemBase {
     System.out.println("disabling compressor");
   }
 
+  public InstantCommand enableCompressorCommand(){
+    return new InstantCommand(this::enableCompressor);
+  }
+
+  public InstantCommand disableCompressorCommand(){
+    return new InstantCommand(this::disableCompressor);
+  }
+
   public void setShooterPiston(boolean state){
-    shooterSolenoid.set( state ? DoubleSolenoid.Value.kForward : DoubleSolenoid.Value.kReverse );
+    shooterSolenoid.set( state ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward );
   }
 
   public void toggleShooterPiston(){
