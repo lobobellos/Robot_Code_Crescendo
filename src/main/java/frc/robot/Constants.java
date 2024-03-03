@@ -142,8 +142,8 @@ public final class Constants {
 
 		public static final double kSpeedPercent = 0.5;
 
-		public static final int freeCurentLimit = 20;
-		public static final int stallCurentLimit = 10;
+		public static final int freeCurentLimit = 25;
+		public static final int stallCurentLimit = 20;
 	}
 
 	public static final class ElevatorConstants {
@@ -160,7 +160,7 @@ public final class Constants {
 	}
 
 	public static final class HookConstants {
-		public static final int kHookMotorCANID = 16;
+		public static final int kHookMotorCANID = 18;
 		public static final int limitSwitchTopPort = 0;
 		public static final int limitSwitchBottomPort = 1;
 
@@ -246,4 +246,40 @@ public final class Constants {
 		public static final double mountingAngleDegrees = 0.0;
 		public static final double mountingHeightInches = 0.0;
 	}
+
+	public static final class ShooterConstants{
+		public static final int topMotorID = 17;
+		public static final int bottomMotorID = 16;
+
+		public static final boolean kTopInverted = true;
+		public static final boolean kBottomInverted = true;
+
+		//speeds in RPM
+		public static final double 
+		topMotorSpeed = 650;
+		public static final double 
+		bottomMotorSpeed = 700;
+
+		public static final int freeCurentLimit = 25;
+		public static final int stallCurentLimit = 20;
+
+
+		public static final class FlywheelPIDF{
+			public static final double kP = 0.0003;
+			public static final double kI = 0.0;
+			public static final double kD = 1e-7;
+			public static final double kF = 0.00022;
+		}
+	}
 }
+// top, bottom
+// 400, 400 : nowhere near enough power
+// 600, 600 : wheels added no discernable difference
+// 800, 800 : rather high but went in
+// 700, 700 : in but funky
+// 700, 700 : in but funky
+// 700, 700 : in but funky
+// 700, 700 : in but funky
+// 650, 700 : 
+
+
