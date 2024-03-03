@@ -278,7 +278,7 @@ public class Limelight extends SubsystemBase {
       r2d = Rotation2d.fromDegrees(Double.NaN);
     }else{
       t2d = new Translation2d(botpose[0], botpose[1]);
-      r2d = Rotation2d.fromDegrees(botpose[5]);
+      r2d = Rotation2d.fromDegrees(botpose[4]);
     }
     return new Pose2d(t2d, r2d);
   }
