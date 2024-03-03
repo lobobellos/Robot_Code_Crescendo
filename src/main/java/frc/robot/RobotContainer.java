@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToAmp;
+import frc.robot.commands.SolenoidOneShot;
 import frc.robot.subsystems.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -17,7 +18,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -45,11 +45,6 @@ public class RobotContainer {
 
 	// instant commands
 	private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
-	private final Command togglePusher = new InstantCommand(pneumatics::toggleShooterPiston);
-	private final Command pusherOneShot = Commands.sequence(
-			new InstantCommand(pneumatics::toggleShooterPiston),
-			Commands.waitSeconds(0.5),
-			new InstantCommand(pneumatics::toggleShooterPiston));
 	private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
 	private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
 	private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
@@ -60,6 +55,9 @@ public class RobotContainer {
 	private final Command runHookRaw = new RunCommand(hook::runRaw, hook);
 	private final Command retractHookRaw = new RunCommand(hook::retractRaw, hook);
 	private final Command runShooter = new RunCommand(shooter::run, shooter);
+
+	//command groups
+	private final Command solenoidOneShot = new SolenoidOneShot(pneumatics);
 
 	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
 
@@ -78,8 +76,7 @@ public class RobotContainer {
 		// register commands
 		NamedCommands.registerCommand("resetRotation", resetRotation);
 		NamedCommands.registerCommand("toggleIntakeAndElevator", toggleIntakeAndElevator);
-		NamedCommands.registerCommand("togglePusher", togglePusher);
-		NamedCommands.registerCommand("pusherOneShot", pusherOneShot);
+		NamedCommands.registerCommand("solenoidOneShot", solenoidOneShot);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -124,7 +121,7 @@ public class RobotContainer {
 
 		// Config mechanism controller buttons
 		m_MechanismController.x()
-				.onTrue(togglePusher);
+				.onTrue(solenoidOneShot);
 		m_MechanismController.b()
 				.onTrue(toggleIntakeAndElevator);
 		m_MechanismController.a()
