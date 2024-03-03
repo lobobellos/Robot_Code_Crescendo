@@ -29,8 +29,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public void run() {
-    //motorTop.set(ElevatorConstants.kSpeedPercent);
-    //motorBottom.set(ElevatorConstants.kSpeedPercent);
+    motorTop.set(ElevatorConstants.kSpeedPercent);
+    motorBottom.set(ElevatorConstants.kSpeedPercent);
   }
 
   public void stop() {

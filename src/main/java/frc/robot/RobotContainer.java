@@ -119,8 +119,8 @@ public class RobotContainer {
 		// Config mechanism controller buttons
 		m_MechanismController.x()
 				.onTrue(solenoidOneShot);
-		// m_MechanismController.b()
-		// 		.toggleOnTrue(intakeElevatorRun);
+		m_MechanismController.b()
+				.toggleOnTrue(intakeElevatorRun);
 		m_MechanismController.a()
 				.toggleOnTrue(runShooter);
 
