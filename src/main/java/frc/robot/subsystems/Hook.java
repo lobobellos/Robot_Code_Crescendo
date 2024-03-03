@@ -2,8 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,7 +13,7 @@ import frc.robot.Constants.HookConstants;
 
 public class Hook extends SubsystemBase {
 
-  private final CANSparkMax m_hookMotor = new CANSparkMax(HookConstants.kHookMotorCANID, MotorType.kBrushed);
+  private final WPI_TalonSRX m_hookMotor = new WPI_TalonSRX(HookConstants.kHookMotorCANID);
 
   private final DigitalInput m_limitSwitchTop = new DigitalInput(HookConstants.limitSwitchTopPort);
   private final DigitalInput m_limitSwitchBottom = new DigitalInput(HookConstants.limitSwitchBottomPort);
