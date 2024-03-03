@@ -44,6 +44,6 @@ public class Intake extends SubsystemBase {
   }
 
   public RunCommand stopCommand() {
-    return new RunCommand(this::run, this);
+    return new RunCommand(this::stop, this);
   }
 }
