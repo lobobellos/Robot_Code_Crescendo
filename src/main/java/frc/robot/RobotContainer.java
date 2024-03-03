@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToAmp;
+import frc.robot.commands.IntakeElevatorRun;
 import frc.robot.commands.SolenoidOneShot;
 import frc.robot.subsystems.*;
 
@@ -18,11 +19,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /*
@@ -45,21 +44,19 @@ public class RobotContainer {
 
 	// instant commands
 	private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
-	private final Command compressorEnable = new InstantCommand(pneumatics::enableCompressor);
-	private final Command compressorDisable = new InstantCommand(pneumatics::disableCompressor);
-	private final Command toggleIntakeEnabled = new InstantCommand(intake::toggleEnabled);
-	private final Command toggleElevatorEnabled = new InstantCommand(elevator::toggleEnabled);
-	private final Command toggleIntakeAndElevator = new SequentialCommandGroup(toggleIntakeEnabled,
-			toggleElevatorEnabled);
+	private final Command compressorEnable = pneumatics.enableCompressorCommand();
+	private final Command compressorDisable = pneumatics.disableCompressorCommand();
+
 	// run commands
 	private final Command runHookRaw = new RunCommand(hook::runRaw, hook);
 	private final Command retractHookRaw = new RunCommand(hook::retractRaw, hook);
 	private final Command runShooter = new RunCommand(shooter::run, shooter);
-
-	//command groups
+	
+	// command groups
+	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator);
 	private final Command solenoidOneShot = new SolenoidOneShot(pneumatics);
-
 	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
+
 
 	// The driver's controller
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -75,7 +72,7 @@ public class RobotContainer {
 
 		// register commands
 		NamedCommands.registerCommand("resetRotation", resetRotation);
-		NamedCommands.registerCommand("toggleIntakeAndElevator", toggleIntakeAndElevator);
+		NamedCommands.registerCommand("toggleIntakeAndElevator", intakeElevatorRun);
 		NamedCommands.registerCommand("solenoidOneShot", solenoidOneShot);
 
 		// Configure the button bindings
@@ -122,11 +119,11 @@ public class RobotContainer {
 		// Config mechanism controller buttons
 		m_MechanismController.x()
 				.onTrue(solenoidOneShot);
-		m_MechanismController.b()
-				.onTrue(toggleIntakeAndElevator);
+		// m_MechanismController.b()
+		// 		.toggleOnTrue(intakeElevatorRun);
 		m_MechanismController.a()
-		.toggleOnTrue(runShooter);
-	
+				.toggleOnTrue(runShooter);
+
 		m_MechanismController.povDown()
 				.whileTrue(retractHookRaw);
 		m_MechanismController.povUp()

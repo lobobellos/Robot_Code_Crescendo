@@ -2,53 +2,47 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
-  private final CANSparkMax elevatorMotorTop = new CANSparkMax(
+  private final CANSparkMax motorTop = new CANSparkMax(
       ElevatorConstants.topMotorID,
       CANSparkMax.MotorType.kBrushless);
-  private final CANSparkMax elevatorMotorBottom = new CANSparkMax(
+  private final CANSparkMax motorBottom = new CANSparkMax(
       ElevatorConstants.BottomMotorID,
       CANSparkMax.MotorType.kBrushless);
 
-  private double kSpeedPercent = 0;
-
   public Elevator() {
-    elevatorMotorTop.setInverted(ElevatorConstants.kTopInverted);
-    elevatorMotorBottom.setInverted(ElevatorConstants.kBottomInverted);
+    motorTop.setInverted(ElevatorConstants.kTopInverted);
+    motorBottom.setInverted(ElevatorConstants.kBottomInverted);
 
-    elevatorMotorTop.setSmartCurrentLimit(
+    motorTop.setSmartCurrentLimit(
         ElevatorConstants.stallCurentLimit,
         ElevatorConstants.freeCurentLimit);
-    elevatorMotorBottom.setSmartCurrentLimit(
+    motorBottom.setSmartCurrentLimit(
         ElevatorConstants.stallCurentLimit,
         ElevatorConstants.freeCurentLimit);
 
-    this.setDefaultCommand(new RunCommand(this::run, this));
-  }
-
-  public void toggleEnabled() {
-    if (kSpeedPercent == 0) {
-      kSpeedPercent = ElevatorConstants.kSpeedPercent;
-    } else {
-      kSpeedPercent = 0;
-    }
+    this.setDefaultCommand(stopCommand());
   }
 
   public void run() {
-    elevatorMotorTop.set(kSpeedPercent);
-    elevatorMotorBottom.set(kSpeedPercent);
+    //motorTop.set(ElevatorConstants.kSpeedPercent);
+    //motorBottom.set(ElevatorConstants.kSpeedPercent);
   }
 
   public void stop() {
-    kSpeedPercent = 0;
+    motorTop.set(0);
+    motorBottom.set(0);
   }
 
-  public void setSpeed(double target) {
-    kSpeedPercent = MathUtil.clamp(target, 0, 1);
+  public RunCommand runCommand() {
+    return new RunCommand(this::run, this);
+  }
+
+  public RunCommand stopCommand() {
+    return new RunCommand(this::run, this);
   }
 }

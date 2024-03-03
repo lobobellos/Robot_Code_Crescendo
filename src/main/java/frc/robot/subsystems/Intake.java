@@ -2,55 +2,48 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax intakeMotorTop = new CANSparkMax(
+  private final CANSparkMax MotorTop = new CANSparkMax(
       IntakeConstants.topMotorID,
       CANSparkMax.MotorType.kBrushless);
-  private final CANSparkMax intakeMotorBottom = new CANSparkMax(
+  private final CANSparkMax MotorBottom = new CANSparkMax(
       IntakeConstants.BottomMotorID,
       CANSparkMax.MotorType.kBrushless);
 
-  private double kSpeedPercent = 0;
-
   public Intake() {
-    intakeMotorTop.setInverted(IntakeConstants.kTopInverted);
-    intakeMotorBottom.setInverted(IntakeConstants.kBottomInverted);
-    intakeMotorTop.setSmartCurrentLimit(
-      IntakeConstants.stallCurentLimit,
-      IntakeConstants.freeCurentLimit
-    );
-    intakeMotorBottom.setSmartCurrentLimit(
-      IntakeConstants.stallCurentLimit,
-      IntakeConstants.freeCurentLimit
-    );
+    MotorTop.setInverted(IntakeConstants.kTopInverted);
+    MotorBottom.setInverted(IntakeConstants.kBottomInverted);
+    // intakeMotorTop.setSmartCurrentLimit(
+    // IntakeConstants.stallCurentLimit,
+    // IntakeConstants.freeCurentLimit
+    // );
+    // intakeMotorBottom.setSmartCurrentLimit(
+    // IntakeConstants.stallCurentLimit,
+    // IntakeConstants.freeCurentLimit
+    // );
 
-    this.setDefaultCommand(new RunCommand(this::run, this));
-  }
-
-  public void toggleEnabled() {
-    if(kSpeedPercent == 0) {
-      kSpeedPercent = IntakeConstants.kSpeedPercent;
-    } else {
-      kSpeedPercent = 0;
-    }
+    this.setDefaultCommand(stopCommand());
   }
 
   public void run() {
-    intakeMotorTop.set(kSpeedPercent);
-    intakeMotorBottom.set(kSpeedPercent);
+    MotorTop.set(IntakeConstants.kSpeedPercent);
+    MotorBottom.set(IntakeConstants.kSpeedPercent);
   }
 
   public void stop() {
-    intakeMotorTop.set(0);
-    intakeMotorBottom.set(0);
+    MotorTop.set(0);
+    MotorBottom.set(0);
   }
 
-  public void setSpeed(double target){
-    kSpeedPercent = MathUtil.clamp(target,0,1);
+  public RunCommand runCommand() {
+    return new RunCommand(this::run, this);
+  }
+
+  public RunCommand stopCommand() {
+    return new RunCommand(this::run, this);
   }
 }
