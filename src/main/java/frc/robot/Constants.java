@@ -172,7 +172,7 @@ public final class Constants {
 		public static final int kDriverControllerPort = 0;
 		public static final int kMechanismControllerPort = 1;
 
-		public static final double joystickDeadband = 0.1;
+		public static final double joystickDeadband = 0.15;
 
 		public static final double rotationMultiplier = 0.01;
 	}
@@ -183,7 +183,7 @@ public final class Constants {
 		// Constraint for the motion profiled robot angle controller
 		public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
 				new PIDConstants(0.5, 0, 0, 0), // translation constants
-				new PIDConstants(0.5, 0, 0.0), // rotation constants
+				new PIDConstants(0, 0, 0.0), // rotation constants
 				AutoConstants.kMaxSpeedMetersPerSecond, // max velocity
 				Math.hypot(DriveConstants.kTrackWidth / 2, DriveConstants.kWheelBase / 2),
 				new ReplanningConfig());
@@ -194,7 +194,7 @@ public final class Constants {
 		public static double positionSetpointY =1.323;
 		public static Rotation2d rotationSetpoint = Rotation2d.fromRotations(0);
 
-		public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(5);
+		public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
 		public static double positionTolerance = 0.001;
 		public static final class MovementPID{
 			public static final double kP = 0.0;
@@ -208,13 +208,13 @@ public final class Constants {
 		}
 
 		public static final class RotationPID{
-			public static final double kP = 0.0;
+			public static final double kP = 0.06;
 			public static final double kI = 0.0;
-			public static final double kD = 0.0;
+			public static final double kD = 0.002;
 		}
 		public static final class RotationFF{
-			public static final double kS = 0.5;
-			public static final double kV = 0.5;
+			public static final double kS = 0.12; 
+			public static final double kV = 0.000;
 			public static final double kA = 0.0;
 		}
 	}
