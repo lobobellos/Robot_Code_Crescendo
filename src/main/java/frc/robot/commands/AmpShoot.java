@@ -18,6 +18,7 @@ public class AmpShoot extends ParallelCommandGroup {
 						shooter.runAmpCommand(),
 						Commands.sequence(
 								Commands.waitUntil(shooter::atSetpoint),
+								Commands.waitSeconds(1),
 								new SolenoidOneShot(pneumatics),
 								Commands.waitSeconds(0.5))));
 	}

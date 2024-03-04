@@ -130,7 +130,8 @@ public final class Constants {
 
 		public static final double maxPressure = 110; // PSI
 
-		public static final int[] shooterDoubleSolenoid = { 0, 1 };
+		public static final int pistonDownPort = 0;
+		public static final int pistonUpPort = 1;
 	}
 
 	public static final class IntakeConstants {
@@ -258,8 +259,11 @@ public final class Constants {
 		public static final boolean kBottomInverted = true;
 
 		// speeds in RPM
-		public static final double topMotorSpeed = 650;
-		public static final double bottomMotorSpeed = 700;
+		public static final double ampTopMotorSpeed = 725;
+		public static final double ampBottomMotorSpeed = 775;
+
+		public static final double speakerTopMotorSpeed = 1200;
+		public static final double speakerBottomMotorSpeed = 1200;
 
 		public static final double speedTolerance = 15;
 
@@ -267,9 +271,9 @@ public final class Constants {
 		public static final int stallCurentLimit = 20;
 
 		public static final class FlywheelPIDF {
-			public static final double kP = 0.0003;
+			public static final double kP = 0.000125;
 			public static final double kI = 0.0;
-			public static final double kD = 1e-7;
+			public static final double kD = 8e-7;
 			public static final double kF = 0.00022;
 		}
 	}
@@ -283,3 +287,5 @@ public final class Constants {
 // 700, 700 : in but funky
 // 700, 700 : in but funky
 // 650, 700 : easy in
+
+//xoxooxxooooxxxx|xxxxx
