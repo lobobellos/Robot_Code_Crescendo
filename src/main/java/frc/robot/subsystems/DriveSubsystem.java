@@ -239,7 +239,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public InstantCommand resetRotation() {
     return new InstantCommand(() -> {
-      rotationSetpoint = new Rotation2d();
+      rotationSetpoint = gyro.getRotation();
     });
   }
 

@@ -43,7 +43,7 @@ public class RobotContainer {
 	private final Shooter shooter = new Shooter();
 
 	// instant commands
-	private final Command resetRotation = new ParallelCommandGroup(gyro.zero(), driveBase.resetRotation());
+	private final Command resetRotation =  driveBase.resetRotation();
 	private final Command compressorEnable = pneumatics.enableCompressorCommand();
 	private final Command compressorDisable = pneumatics.disableCompressorCommand();
 
@@ -55,7 +55,7 @@ public class RobotContainer {
 	// command groups
 	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator);
 	private final Command solenoidOneShot = new SolenoidOneShot(pneumatics);
-	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase,gyro);
+	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
 
 
 	// The driver's controller
