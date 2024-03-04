@@ -25,6 +25,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.DriveConstants.RotationFF;
 import frc.robot.Constants.DriveConstants.RotationPID;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -235,6 +236,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  public void stop(){
+    drive(0, 0, 0, false);
+  }
+
+  public RunCommand stopCommand(){
+    return new RunCommand(this::stop, this);
   }
 
   public InstantCommand resetRotation() {
