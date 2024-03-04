@@ -189,31 +189,34 @@ public final class Constants {
 				new ReplanningConfig());
 	}
 
-	public static final class AutoAlignmentConstants{
+	public static final class AutoAlignmentConstants {
 		public static double positionSetpointX = 0;
-		public static double positionSetpointY =1.323;
-		public static Rotation2d rotationSetpoint = Rotation2d.fromRotations(0);
+		public static double positionSetpointY = -0.35;
+		public static double positionTolerance = 0.02;
 
+		public static Rotation2d rotationSetpoint = Rotation2d.fromRotations(0);
 		public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
-		public static double positionTolerance = 0.001;
-		public static final class MovementPID{
-			public static final double kP = 0.0;
+
+		public static final class MovementPID {
+			public static final double kP = 1.0;
 			public static final double kI = 0.0;
 			public static final double kD = 0.0;
 		}
-		public static final class MovementFF{
-			public static final double kS = 0.0;
+
+		public static final class MovementFF {
+			public static final double kS = 0.1;
 			public static final double kV = 0.0;
 			public static final double kA = 0.0;
 		}
 
-		public static final class RotationPID{
+		public static final class RotationPID {
 			public static final double kP = 0.06;
 			public static final double kI = 0.0;
 			public static final double kD = 0.002;
 		}
-		public static final class RotationFF{
-			public static final double kS = 0.12; 
+
+		public static final class RotationFF {
+			public static final double kS = 0.12;
 			public static final double kV = 0.000;
 			public static final double kA = 0.0;
 		}
@@ -235,36 +238,35 @@ public final class Constants {
 
 	}
 
-	public static final class LimelightConstants{
+	public static final class LimelightConstants {
 		public static final double defaultReturnValue = -1;
 		public static final double alignmentTolerance = 5;
 
 		public static final double targetHeight = 0.7;
 		public static final double targetWidth = 0.5;
 		public static final double targetFloorHeight = 0.0;
-	
+
 		public static final double mountingAngleDegrees = 0.0;
 		public static final double mountingHeightInches = 0.0;
 	}
 
-	public static final class ShooterConstants{
+	public static final class ShooterConstants {
 		public static final int topMotorID = 17;
 		public static final int bottomMotorID = 16;
 
 		public static final boolean kTopInverted = true;
 		public static final boolean kBottomInverted = true;
 
-		//speeds in RPM
-		public static final double 
-		topMotorSpeed = 650;
-		public static final double 
-		bottomMotorSpeed = 700;
+		// speeds in RPM
+		public static final double topMotorSpeed = 650;
+		public static final double bottomMotorSpeed = 700;
+
+		public static final double speedTolerance = 15;
 
 		public static final int freeCurentLimit = 25;
 		public static final int stallCurentLimit = 20;
 
-
-		public static final class FlywheelPIDF{
+		public static final class FlywheelPIDF {
 			public static final double kP = 0.0003;
 			public static final double kI = 0.0;
 			public static final double kD = 1e-7;
@@ -281,6 +283,3 @@ public final class Constants {
 // 700, 700 : in but funky
 // 700, 700 : in but funky
 // 650, 700 : easy in
-
-
-
