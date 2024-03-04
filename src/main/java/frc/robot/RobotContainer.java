@@ -55,7 +55,7 @@ public class RobotContainer {
 	// command groups
 	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator);
 	private final Command solenoidOneShot = new SolenoidOneShot(pneumatics);
-	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
+	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase,gyro);
 
 
 	// The driver's controller
@@ -80,7 +80,7 @@ public class RobotContainer {
 
 		// Configure default commands
 		driveBase.setDefaultCommand(
-				new RunCommand(() -> driveBase.drive(
+				new RunCommand(() -> driveBase.joystickDrive(
 						-m_driverController.getLeftY(),
 						-m_driverController.getLeftX(),
 						-m_driverController.getRightX(),

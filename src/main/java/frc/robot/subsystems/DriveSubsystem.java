@@ -171,8 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(gyro.getRotation(), modulePositions(), pose);
   }
 
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-
+  public void joystickDrive(double xSpeed, double ySpeed, double rot, boolean fieldRelative){
     final var multiplier = isDemo ? DriveConstants.kDemoSpeedMetersPerSecond : DriveConstants.kMaxSpeedMetersPerSecond;
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.joystickDeadband) * multiplier;
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.joystickDeadband) * multiplier;
@@ -189,9 +188,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("rotation/pidOutput", rotationOutput);
 
+    drive(xSpeed, ySpeed,rotationOutput,fieldRelative);
+  }
+
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+
+    
+
     chassisSpeeds = fieldRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotationOutput, gyro.getRotation())
-        : new ChassisSpeeds(xSpeed, ySpeed, rotationOutput);
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation())
+        : new ChassisSpeeds(xSpeed, ySpeed, rot);
 
     SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
