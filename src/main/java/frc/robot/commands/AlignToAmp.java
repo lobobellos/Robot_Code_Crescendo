@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoAlignmentConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Limelight;
 
 public class AlignToAmp extends SequentialCommandGroup {
@@ -39,30 +38,35 @@ public class AlignToAmp extends SequentialCommandGroup {
       AutoAlignmentConstants.RotationPID.kI,
       AutoAlignmentConstants.RotationPID.kD);
 
-  private static final SimpleMotorFeedforward rotationFF = new SimpleMotorFeedforward(
-      AutoAlignmentConstants.RotationFF.kS,
-      AutoAlignmentConstants.RotationFF.kV,
-      AutoAlignmentConstants.RotationFF.kA);
-
   public AlignToAmp(Limelight limelight, DriveSubsystem drive) {
     super(
         new RunCommand(
             () -> {
               Pose2d pose = limelight.getTargetPose();
-              double rot = (-rotationPid.calculate(pose.getRotation().getDegrees()));
+
+              double rot = //rotationPid.atSetpoint() ? 0 :
+              (-rotationPid.calculate(pose.getRotation().getDegrees()));
+              double xVel = //positionXPid.atSetpoint() ? 0 :
+              (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
+              double yVel =  //positionYPid.atSetpoint() ? 0 :
+              (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
+
               SmartDashboard.putNumber("rot  output", rot);
-              drive.drive(0, 0, rot , false);
+              drive.drive(yVel, xVel, rot, false);
             },
             drive) {
-          private int setpointCounter = 0;
 
           public boolean isFinished() {
-            if (rotationPid.atSetpoint())
-              setpointCounter++;
-            else
-              setpointCounter = 0;
+            //Pose2d pose = limelight.getTargetPose();
 
-            return setpointCounter >= 2 || !limelight.validTargetExists();
+            //rotationPid.calculate(pose.getRotation().getDegrees());
+
+
+            final boolean atSetpoint = (rotationPid.atSetpoint() &&
+                positionXPid.atSetpoint() &&
+                positionYPid.atSetpoint()) || !limelight.validTargetExists();
+            SmartDashboard.putBoolean("atSetpoint", atSetpoint);
+            return atSetpoint;
           }
 
           public void end(boolean interupted) {
@@ -80,10 +84,6 @@ public class AlignToAmp extends SequentialCommandGroup {
     rotationPid.setSetpoint(AutoAlignmentConstants.rotationSetpoint.getDegrees());
     rotationPid.setTolerance(AutoAlignmentConstants.rotationTolerance.getDegrees());
     rotationPid.enableContinuousInput(-180, 180);
-
-    this.limelight = limelight;
-
-    addRequirements(limelight, drive);
 
     System.out.println("start");
   }
