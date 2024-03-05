@@ -262,8 +262,8 @@ public final class Constants {
 		public static final double ampTopMotorSpeed = 725;
 		public static final double ampBottomMotorSpeed = 775;
 
-		public static final double speakerTopMotorSpeed = 1200;
-		public static final double speakerBottomMotorSpeed = 1200;
+		public static final double speakerTopMotorSpeed = 1800;
+		public static final double speakerBottomMotorSpeed = 1800;
 
 		public static final double speedTolerance = 15;
 
