@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -63,6 +65,11 @@ public class Shooter extends SubsystemBase {
                 ShooterConstants.ampBottomMotorSpeed);
     }
 
+    public void runSpeaker(){
+        setSpeeds(ShooterConstants.speakerTopMotorSpeed,
+        ShooterConstants.speakerBottomMotorSpeed );
+    }
+
     public void stop() {
         topSetpoint = 0;
         bottomSetpoint = 0;
@@ -70,8 +77,12 @@ public class Shooter extends SubsystemBase {
         bottomSparkMax.stopMotor();
     }
 
-    public RunCommand runAmpCommand() {
-        return new RunCommand(this::runAmp, this);
+    public Command runAmpCommand() {
+        return Commands.run(this::runAmp, this);
+    }
+
+    public Command runSpeakerCommand(){
+        return Commands.run(this::runSpeaker,this);
     }
 
     public boolean atSetpoint() {
@@ -80,7 +91,6 @@ public class Shooter extends SubsystemBase {
         return Math.abs(topEncoder.getVelocity() - topSetpoint) < ShooterConstants.speedTolerance &&
                 Math.abs(bottomEncoder.getVelocity() - bottomSetpoint) < ShooterConstants.speedTolerance;
     }
-
 
     public void periodic(){
         SmartDashboard.putNumberArray("shooter speed", 
