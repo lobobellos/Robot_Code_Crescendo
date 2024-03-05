@@ -8,6 +8,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToAmp;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.IntakeElevatorRun;
+import frc.robot.commands.SpeakerShoot;
 import frc.robot.commands.ZeroAll;
 import frc.robot.subsystems.*;
 
@@ -54,8 +55,9 @@ public class RobotContainer {
 	// command groups
 	private final Command zeroAll = new ZeroAll(driveBase, gyro);
 	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator);
-	private final AlignToAmp alignToAmp = new AlignToAmp(limelight, driveBase);
-	private final Command ampShoot = new AmpShoot(shooter, pneumatics);
+	private final Command alignToAmp = new AlignToAmp(limelight, driveBase);
+	private final Command ampShoot = new AmpShoot(shooter, pneumatics,driveBase);
+	private final Command speakerShoot = new SpeakerShoot(shooter, pneumatics, driveBase);
 
 	// The driver's controller
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -117,6 +119,8 @@ public class RobotContainer {
 		// Config mechanism controller buttons
 		m_MechanismController.x()
 				.onTrue(ampShoot);
+		m_MechanismController.y()
+			.onTrue(speakerShoot);
 		m_MechanismController.b()
 				.toggleOnTrue(intakeElevatorRun);
 		// m_MechanismController.a()
