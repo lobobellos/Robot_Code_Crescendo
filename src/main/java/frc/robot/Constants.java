@@ -262,8 +262,12 @@ public final class Constants {
 		public static final double ampTopMotorSpeed = 725;
 		public static final double ampBottomMotorSpeed = 775;
 
-		public static final double speakerTopMotorSpeed = 1800;
-		public static final double speakerBottomMotorSpeed = 1800;
+		public static final double speakerTopMotorSpeed = 814;
+		public static final double speakerBottomMotorSpeed = 3400;
+
+		public static final double timeToShoot = 3;
+
+		// fn + shift + f5
 
 		public static final double speedTolerance = 15;
 
@@ -277,7 +281,32 @@ public final class Constants {
 			public static final double kF = 0.00022;
 		}
 	}
+	public static final class ArmPivotConstants{
+		public static final int ID = 19;
+
+		public static final int encoderPort = 7;
+
+		public static final Rotation2d encoderOffset =  Rotation2d.fromDegrees(0);
+
+		public static final Rotation2d ampScoringPosition = Rotation2d.fromDegrees(0);
+		public static final Rotation2d speakerScoringPosition = Rotation2d.fromDegrees(0);
+
+		public static final Rotation2d safemax = Rotation2d.fromDegrees(0);
+		public static final Rotation2d safemin = Rotation2d.fromDegrees(0);
+
+
+		public static final class ArmPID{
+			public static final double kP = 0;
+			public static final double kI = 0;
+			public static final double kD = 0;
+			public static final double kF = 0;
+		}
+	}
 }
+
+
+
+
 // top, bottom
 // 400, 400 : nowhere near enough power
 // 600, 600 : wheels added no discernable difference
