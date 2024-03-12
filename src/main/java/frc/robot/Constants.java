@@ -8,8 +8,10 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.struct.Pose2dStruct;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 /**
@@ -190,27 +192,33 @@ public final class Constants {
 				new ReplanningConfig());
 	}
 
-	
-	
-
 	public static final class AutoAlignmentConstants {
- 
-		public static final class AmpSetpoint{
+
+		public static final class AmpSetpoint {
 			public static double positionX = 0;
 			public static double positionY = -0.35;
 			public static double positionTolerance = 0.02;
-			
+
 			public static Rotation2d rotation = Rotation2d.fromRotations(0);
 			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
 		}
 
-		public static final class SpeakerSetpoint{
-			public static double positionX = 0;
-			public static double positionY = -1.85;
-			public static double positionTolerance = 0.02;
-			
-			public static Rotation2d rotation = Rotation2d.fromRotations(0);
-			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
+		public static final class SpeakerSetpoint {
+			public static double positionTolerance = 0.05;
+			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(5);
+
+			public static Pose2d center = new Pose2d(
+					0,
+					-1.8,
+					Rotation2d.fromDegrees(0));
+			public static Pose2d right = new Pose2d(
+					1.5,
+					-1.0,
+					Rotation2d.fromDegrees(-61));
+			public static Pose2d left = new Pose2d(
+					-1.5,
+					-1.0,
+					Rotation2d.fromDegrees(61));
 		}
 
 		public static final class MovementPID {
@@ -226,7 +234,7 @@ public final class Constants {
 		}
 
 		public static final class RotationPID {
-			public static final double kP = 0.06;
+			public static final double kP = 0.04;
 			public static final double kI = 0.0;
 			public static final double kD = 0.002;
 		}
@@ -277,13 +285,13 @@ public final class Constants {
 		public static final double ampTopMotorSpeed = 975;
 		public static final double ampBottomMotorSpeed = 1075;
 
-		//baseline
-		//900
-		//1000
+		// baseline
+		// 900
+		// 1000
 
-		//test
-		//925
-		//1025
+		// test
+		// 925
+		// 1025
 
 		public static final double speakerTopMotorSpeed = 2000;
 		public static final double speakerBottomMotorSpeed = 2000;
@@ -304,12 +312,13 @@ public final class Constants {
 			public static final double kF = 0.00022;
 		}
 	}
-	public static final class ArmPivotConstants{
+
+	public static final class ArmPivotConstants {
 		public static final int ID = 19;
 
 		public static final int encoderPort = 7;
 
-		public static final Rotation2d encoderOffset =Rotation2d.fromDegrees(117); //  Rotation2d.fromRotations(1-0.67);
+		public static final Rotation2d encoderOffset = Rotation2d.fromDegrees(117); // Rotation2d.fromRotations(1-0.67);
 
 		public static final Rotation2d ampScoringPosition = Rotation2d.fromDegrees(7.5);
 		public static final Rotation2d speakerScoringPosition = Rotation2d.fromDegrees(15);
@@ -317,8 +326,7 @@ public final class Constants {
 		public static final Rotation2d safemax = Rotation2d.fromDegrees(0);
 		public static final Rotation2d safemin = Rotation2d.fromDegrees(0);
 
-
-		public static final class ArmPID{
+		public static final class ArmPID {
 			public static final double kP = 0.02;
 			public static final double kI = 0;
 			public static final double kD = 0;
@@ -326,9 +334,6 @@ public final class Constants {
 		}
 	}
 }
-
-
-
 
 // top, bottom
 // 400, 400 : nowhere near enough power
@@ -340,4 +345,4 @@ public final class Constants {
 // 700, 700 : in but funky
 // 650, 700 : easy in
 
-//xoxooxxooooxxxx|xxxxx
+// xoxooxxooooxxxx|xxxxx

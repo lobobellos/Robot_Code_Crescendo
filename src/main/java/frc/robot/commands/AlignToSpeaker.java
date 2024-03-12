@@ -46,13 +46,13 @@ public class AlignToSpeaker extends SequentialCommandGroup {
 
               double rot = // rotationPid.atSetpoint() ? 0 :
                   (-rotationPid.calculate(pose.getRotation().getDegrees()));
-              double xVel = // positionXPid.atSetpoint() ? 0 :
-                  (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
-              double yVel = // positionYPid.atSetpoint() ? 0 :
-                  (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
+              // double xVel = // positionXPid.atSetpoint() ? 0 :
+              // (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
+              // double yVel = // positionYPid.atSetpoint() ? 0 :
+              // (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
 
               SmartDashboard.putNumber("rot  output", rot);
-              drive.drive(yVel, xVel, rot, false);
+              drive.alignmentDrive(0, 0, rot, pose.getRotation().times(-1));
             },
             drive) {
 
@@ -71,16 +71,31 @@ public class AlignToSpeaker extends SequentialCommandGroup {
           public void end(boolean interupted) {
             System.out.println("alignment finished");
           }
+
+          public void initialize() {
+            var p = limelight.getTargetPose();
+
+            Pose2d setpoint;
+            if (Math.abs(p.getRotation().getDegrees()) <= 30) {
+              setpoint = AutoAlignmentConstants.SpeakerSetpoint.center;
+
+            } else if (p.getRotation().getDegrees() < 0) {
+              setpoint = AutoAlignmentConstants.SpeakerSetpoint.right;
+            } else if (p.getRotation().getDegrees() > 0) {
+              setpoint = AutoAlignmentConstants.SpeakerSetpoint.left;
+            } else {
+              this.cancel();
+              return;
+            }
+            positionXPid.setSetpoint(setpoint.getX());
+            positionYPid.setSetpoint(setpoint.getY());
+            rotationPid.setSetpoint(setpoint.getRotation().getDegrees());
+          }
         },
         drive.resetRotation());
 
-    positionXPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.positionX);
-    positionXPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.positionTolerance);
-
-    positionYPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.positionY);
     positionYPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.positionTolerance);
-
-    rotationPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.rotation.getDegrees());
+    positionXPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.positionTolerance);
     rotationPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.rotationTolerance.getDegrees());
     rotationPid.enableContinuousInput(-180, 180);
 
