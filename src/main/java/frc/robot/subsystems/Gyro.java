@@ -15,7 +15,7 @@ public class Gyro extends SubsystemBase {
   public static final AHRS ahrs = new AHRS(SPI.Port.kMXP); 
 
   public Gyro() {
-    //recalibrate();
+    recalibrate();
     
     addChild("imu", ahrs);
   }

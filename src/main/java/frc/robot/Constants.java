@@ -190,13 +190,28 @@ public final class Constants {
 				new ReplanningConfig());
 	}
 
-	public static final class AutoAlignmentConstants {
-		public static double positionSetpointX = 0;
-		public static double positionSetpointY = -0.35;
-		public static double positionTolerance = 0.02;
+	
+	
 
-		public static Rotation2d rotationSetpoint = Rotation2d.fromRotations(0);
-		public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
+	public static final class AutoAlignmentConstants {
+ 
+		public static final class AmpSetpoint{
+			public static double positionX = 0;
+			public static double positionY = -0.35;
+			public static double positionTolerance = 0.02;
+			
+			public static Rotation2d rotation = Rotation2d.fromRotations(0);
+			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
+		}
+
+		public static final class SpeakerSetpoint{
+			public static double positionX = 0;
+			public static double positionY = -1.85;
+			public static double positionTolerance = 0.02;
+			
+			public static Rotation2d rotation = Rotation2d.fromRotations(0);
+			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(2);
+		}
 
 		public static final class MovementPID {
 			public static final double kP = 1.0;
@@ -259,11 +274,19 @@ public final class Constants {
 		public static final boolean kBottomInverted = true;
 
 		// speeds in RPM
-		public static final double ampTopMotorSpeed = 725;
-		public static final double ampBottomMotorSpeed = 775;
+		public static final double ampTopMotorSpeed = 975;
+		public static final double ampBottomMotorSpeed = 1075;
 
-		public static final double speakerTopMotorSpeed = 814;
-		public static final double speakerBottomMotorSpeed = 3400;
+		//baseline
+		//900
+		//1000
+
+		//test
+		//925
+		//1025
+
+		public static final double speakerTopMotorSpeed = 2000;
+		public static final double speakerBottomMotorSpeed = 2000;
 
 		public static final double timeToShoot = 3;
 
@@ -275,7 +298,7 @@ public final class Constants {
 		public static final int stallCurentLimit = 20;
 
 		public static final class FlywheelPIDF {
-			public static final double kP = 0.000125;
+			public static final double kP = 0.0003;
 			public static final double kI = 0.0;
 			public static final double kD = 8e-7;
 			public static final double kF = 0.00022;
@@ -286,17 +309,17 @@ public final class Constants {
 
 		public static final int encoderPort = 7;
 
-		public static final Rotation2d encoderOffset =  Rotation2d.fromDegrees(0);
+		public static final Rotation2d encoderOffset =Rotation2d.fromDegrees(117); //  Rotation2d.fromRotations(1-0.67);
 
-		public static final Rotation2d ampScoringPosition = Rotation2d.fromDegrees(0);
-		public static final Rotation2d speakerScoringPosition = Rotation2d.fromDegrees(0);
+		public static final Rotation2d ampScoringPosition = Rotation2d.fromDegrees(7.5);
+		public static final Rotation2d speakerScoringPosition = Rotation2d.fromDegrees(15);
 
 		public static final Rotation2d safemax = Rotation2d.fromDegrees(0);
 		public static final Rotation2d safemin = Rotation2d.fromDegrees(0);
 
 
 		public static final class ArmPID{
-			public static final double kP = 0;
+			public static final double kP = 0.02;
 			public static final double kI = 0;
 			public static final double kD = 0;
 			public static final double kF = 0;

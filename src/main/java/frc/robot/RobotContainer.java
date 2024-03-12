@@ -42,11 +42,14 @@ public class RobotContainer {
 	private final Intake intake = new Intake();
 	private final Elevator elevator = new Elevator();
 	private final Shooter shooter = new Shooter();
+	private final ArmPivot pivot = new ArmPivot();
 
 	// instant commands
 	private final Command resetRotation =  driveBase.resetRotation();
 	private final Command compressorEnable = pneumatics.enableCompressorCommand();
 	private final Command compressorDisable = pneumatics.disableCompressorCommand();
+
+	private final Command toggleJoint = pivot.ToggleJointCommand();
 
 	// run commands
 	private final Command runHookRaw = new RunCommand(hook::runRaw, hook);
@@ -123,8 +126,8 @@ public class RobotContainer {
 			.onTrue(speakerShoot);
 		m_MechanismController.b()
 				.toggleOnTrue(intakeElevatorRun);
-		// m_MechanismController.a()
-		// 		.toggleOnTrue(runShooter);
+		m_MechanismController.a()
+				.toggleOnTrue(toggleJoint);
 
 		m_MechanismController.povDown()
 				.whileTrue(retractHookRaw);
@@ -141,11 +144,7 @@ public class RobotContainer {
 
 	}
 
-	/**
-	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
-	 * @return the command to run in autonomous
-	 */
+
 	public Command getAutonomousCommand() {
 		return autoChooser == null
 				? new PrintCommand("uh... there's no auto, dude")

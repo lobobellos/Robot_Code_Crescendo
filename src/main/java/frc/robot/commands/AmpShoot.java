@@ -19,10 +19,10 @@ public class AmpShoot extends ParallelCommandGroup {
 						shooter.runAmpCommand(),
 						drive.stopCommand(),
 						Commands.sequence(
-								Commands.waitUntil(shooter::atSetpoint),
-								Commands.waitSeconds(1),
+								//Commands.waitUntil(shooter::atSetpoint),
+								Commands.waitSeconds(2),
 								new SolenoidOneShot(pneumatics),
-								Commands.waitSeconds(0.5))
+								Commands.waitSeconds(1.5))
 						));
 	}
 }

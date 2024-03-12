@@ -89,6 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
         gyro.getRotation(),
         modulePositions());
 
+    rotationSetpoint = gyro.getRotation();
+
     rotationPID.enableContinuousInput(-Math.PI, Math.PI);
     rotationPID.setTolerance(
         DriveConstants.rotationPostitionTolerance,

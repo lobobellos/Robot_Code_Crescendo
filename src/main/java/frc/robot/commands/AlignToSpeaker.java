@@ -10,7 +10,7 @@ import frc.robot.Constants.AutoAlignmentConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 
-public class AlignToAmp extends SequentialCommandGroup {
+public class AlignToSpeaker extends SequentialCommandGroup {
 
   Limelight limelight;
 
@@ -38,18 +38,18 @@ public class AlignToAmp extends SequentialCommandGroup {
       AutoAlignmentConstants.RotationPID.kI,
       AutoAlignmentConstants.RotationPID.kD);
 
-  public AlignToAmp(Limelight limelight, DriveSubsystem drive) {
+  public AlignToSpeaker(Limelight limelight, DriveSubsystem drive) {
     super(
         new RunCommand(
             () -> {
               Pose2d pose = limelight.getTargetPose();
 
-              double rot = //rotationPid.atSetpoint() ? 0 :
-              (-rotationPid.calculate(pose.getRotation().getDegrees()));
-              double xVel = //positionXPid.atSetpoint() ? 0 :
-              (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
-              double yVel =  //positionYPid.atSetpoint() ? 0 :
-              (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
+              double rot = // rotationPid.atSetpoint() ? 0 :
+                  (-rotationPid.calculate(pose.getRotation().getDegrees()));
+              double xVel = // positionXPid.atSetpoint() ? 0 :
+                  (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
+              double yVel = // positionYPid.atSetpoint() ? 0 :
+                  (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
 
               SmartDashboard.putNumber("rot  output", rot);
               drive.drive(yVel, xVel, rot, false);
@@ -57,10 +57,9 @@ public class AlignToAmp extends SequentialCommandGroup {
             drive) {
 
           public boolean isFinished() {
-            //Pose2d pose = limelight.getTargetPose();
+            // Pose2d pose = limelight.getTargetPose();
 
-            //rotationPid.calculate(pose.getRotation().getDegrees());
-
+            // rotationPid.calculate(pose.getRotation().getDegrees());
 
             final boolean atSetpoint = (rotationPid.atSetpoint() &&
                 positionXPid.atSetpoint() &&
@@ -75,14 +74,14 @@ public class AlignToAmp extends SequentialCommandGroup {
         },
         drive.resetRotation());
 
-    positionXPid.setSetpoint(AutoAlignmentConstants.AmpSetpoint.positionX);
-    positionXPid.setTolerance(AutoAlignmentConstants.AmpSetpoint.positionTolerance);
+    positionXPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.positionX);
+    positionXPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.positionTolerance);
 
-    positionYPid.setSetpoint(AutoAlignmentConstants.AmpSetpoint.positionY);
-    positionYPid.setTolerance(AutoAlignmentConstants.AmpSetpoint.positionTolerance);
+    positionYPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.positionY);
+    positionYPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.positionTolerance);
 
-    rotationPid.setSetpoint(AutoAlignmentConstants.AmpSetpoint.rotation.getDegrees());
-    rotationPid.setTolerance(AutoAlignmentConstants.AmpSetpoint.rotationTolerance.getDegrees());
+    rotationPid.setSetpoint(AutoAlignmentConstants.SpeakerSetpoint.rotation.getDegrees());
+    rotationPid.setTolerance(AutoAlignmentConstants.SpeakerSetpoint.rotationTolerance.getDegrees());
     rotationPid.enableContinuousInput(-180, 180);
 
     System.out.println("start");
