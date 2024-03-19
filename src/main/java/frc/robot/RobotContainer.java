@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -58,12 +59,17 @@ public class RobotContainer {
 	
 	// command groups
 	private final Command zeroAll = new ZeroAll(driveBase, gyro);
-	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator);
+	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator,pivot);
 	private final Command alignToAmp = new AlignToAmp(limelight, driveBase);
 	private final Command alignToSpeaker = new AlignToSpeaker(limelight,driveBase);
 
 	private final Command ampShoot = new AmpShoot(shooter, pneumatics,driveBase);
-	private final Command speakerShoot = new SpeakerShoot(shooter, pneumatics, driveBase);
+	private final Command speakerShoot = new SpeakerShoot(shooter, pneumatics, driveBase,pivot);
+
+	private final Command alignAndShoot = Commands.sequence(
+		new AlignToSpeaker(limelight, driveBase),
+		new SpeakerShoot(shooter,pneumatics,driveBase,pivot)
+	);
 	// The driver's controller
 	CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 	// the mechanism controller
@@ -78,7 +84,8 @@ public class RobotContainer {
 
 		// register commands
 		NamedCommands.registerCommand("resetRotation", resetRotation);
-		NamedCommands.registerCommand("toggleIntakeAndElevator", intakeElevatorRun);
+		NamedCommands.registerCommand("intakeElevatorRun", intakeElevatorRun);
+		NamedCommands.registerCommand("alignAndShoot", alignAndShoot);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -120,8 +127,8 @@ public class RobotContainer {
 
 		m_driverController.b()
 				.onTrue(alignToAmp);
-		m_driverController.x()
-				.onTrue(alignToSpeaker);
+	 	m_driverController.x()
+		 		.onTrue(alignToSpeaker);
 
 		// Config mechanism controller buttons
 		m_MechanismController.x()
