@@ -25,7 +25,7 @@ public class Gyro extends SubsystemBase {
   }
 
   public Command zeroCommand() {
-    return Commands.runOnce(this::zeroCommand);
+    return Commands.runOnce(this::zero);
   }
 
   public void recalibrate() {
