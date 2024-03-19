@@ -77,7 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
       RotationFF.kV,
       RotationFF.kA);
 
-  private boolean isDemo = true;
+  private boolean isDemo = false;
   private Rotation2d rotationSetpoint = new Rotation2d(0);
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds();
 
@@ -190,6 +190,9 @@ public class DriveSubsystem extends SubsystemBase {
             + rotationFF.calculate(gyro.getAngularVelocity().getRadians());
 
     SmartDashboard.putNumber("rotation/pidOutput", rotationOutput);
+    SmartDashboard.putNumber("rotation/setpoint", rotationSetpoint.getRadians());
+    SmartDashboard.putNumber("rotation/rotation", gyro.getRotation().getRadians());
+
 
     drive(xSpeed, ySpeed,rotationOutput,fieldRelative);
   }
