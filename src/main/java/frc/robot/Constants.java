@@ -11,7 +11,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.struct.Pose2dStruct;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 /**
@@ -156,7 +155,7 @@ public final class Constants {
 		public static final boolean kTopInverted = true;
 		public static final boolean kBottomInverted = false;
 
-		public static final double kSpeedPercent = 0.5;
+		public static final double kSpeedPercent = 1;
 
 		public static final int freeCurentLimit = 20;
 		public static final int stallCurentLimit = 10;
@@ -204,18 +203,18 @@ public final class Constants {
 		}
 
 		public static final class SpeakerSetpoint {
-			public static double positionTolerance = 0.05;
+			public static double positionTolerance = 0.08;
 			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(5);
 
 			public static Pose2d center = new Pose2d(
 					0,
-					-1.8,
+					-1.5,
 					Rotation2d.fromDegrees(0));
 			public static Pose2d right = new Pose2d(
 					1.5,
 					-1.0,
 					Rotation2d.fromDegrees(-61));
-			public static Pose2d left = new Pose2d(
+			public static Pose2d left = new Pose2d(  
 					-1.5,
 					-1.0,
 					Rotation2d.fromDegrees(61));
@@ -296,7 +295,7 @@ public final class Constants {
 		public static final double speakerTopMotorSpeed = 2000;
 		public static final double speakerBottomMotorSpeed = 2000;
 
-		public static final double timeToShoot = 3;
+		public static final double timeToShoot = 1.5;
 
 		// fn + shift + f5
 
@@ -316,12 +315,18 @@ public final class Constants {
 	public static final class ArmPivotConstants {
 		public static final int ID = 19;
 
-		public static final int encoderPort = 7;
+		public static final int encoderPort = 8;
 
-		public static final Rotation2d encoderOffset = Rotation2d.fromDegrees(117); // Rotation2d.fromRotations(1-0.67);
+		public static final Rotation2d encoderOffset = Rotation2d.fromDegrees(-31.9); // Rotation2d.fromRotations(1-0.67);
 
-		public static final Rotation2d ampScoringPosition = Rotation2d.fromDegrees(7.5);
-		public static final Rotation2d speakerScoringPosition = Rotation2d.fromDegrees(15);
+		public static final Rotation2d midPosition = Rotation2d.fromDegrees(7.5);
+		public static final Rotation2d highPosition = Rotation2d.fromDegrees(15);
+
+		public static enum jointPosition{
+			starting,
+			mid,
+			high,
+		}		
 
 		public static final Rotation2d safemax = Rotation2d.fromDegrees(0);
 		public static final Rotation2d safemin = Rotation2d.fromDegrees(0);
