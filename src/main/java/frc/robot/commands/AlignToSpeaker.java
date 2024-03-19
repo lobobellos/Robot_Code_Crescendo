@@ -46,24 +46,25 @@ public class AlignToSpeaker extends SequentialCommandGroup {
 
               double rot = // rotationPid.atSetpoint() ? 0 :
                   (-rotationPid.calculate(pose.getRotation().getDegrees()));
-              // double xVel = // positionXPid.atSetpoint() ? 0 :
-              // (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
-              // double yVel = // positionYPid.atSetpoint() ? 0 :
-              // (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
+              double xVel = // positionXPid.atSetpoint() ? 0 :
+                  (positionXPid.calculate(pose.getX())) - positionXFF.calculate(pose.getX());
+              double yVel = // positionYPid.atSetpoint() ? 0 :
+                  (-positionYPid.calculate(pose.getY())) + positionYFF.calculate(pose.getY());
 
               SmartDashboard.putNumber("rot  output", rot);
-              drive.alignmentDrive(0, 0, rot, pose.getRotation().times(-1));
+              drive.alignmentDrive(yVel,xVel , rot, drive.getPose().getRotation());
             },
             drive) {
 
           public boolean isFinished() {
-            // Pose2d pose = limelight.getTargetPose();
 
-            // rotationPid.calculate(pose.getRotation().getDegrees());
 
-            final boolean atSetpoint = (rotationPid.atSetpoint() &&
-                positionXPid.atSetpoint() &&
-                positionYPid.atSetpoint()) || !limelight.validTargetExists();
+            final boolean atSetpoint = (
+                rotationPid.atSetpoint()
+                &&positionXPid.atSetpoint()
+                &&positionYPid.atSetpoint()
+                || !limelight.validTargetExists()
+            );
             SmartDashboard.putBoolean("atSetpoint", atSetpoint);
             return atSetpoint;
           }
