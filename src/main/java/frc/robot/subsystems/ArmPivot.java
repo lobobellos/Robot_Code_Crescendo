@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmPivotConstants;
+import frc.robot.Constants.ArmPivotConstants.jointPosition;
 
 public class ArmPivot extends SubsystemBase {
 
@@ -27,31 +30,33 @@ public class ArmPivot extends SubsystemBase {
             ArmPivotConstants.ArmPID.kI,
             ArmPivotConstants.ArmPID.kD);
 
-    private Rotation2d setpoint = Rotation2d.fromDegrees(0);
+
+    private HashMap<jointPosition,Rotation2d> jointPos = new HashMap<jointPosition,Rotation2d>();
+
 
     ShuffleboardTab tab;
 
-    double output;
+    jointPosition position;
 
     public ArmPivot(){
-        setSetpoint(Rotation2d.fromDegrees(0));
         encoder.reset();
-        
+        position = jointPosition.starting;
 
         tab = Shuffleboard.getTab("armPivot");
         tab.add("armPivot",controller);
-        tab.addDouble("pid output", this::getOutput);
         tab.addDouble("position degs", getRotation()::getDegrees);
 
         setDefaultCommand(this.runCommand());
-    }
 
-    public void setSetpoint(Rotation2d setpoint) {
-        this.setpoint = setpoint;
+        jointPos.put(jointPosition.starting, Rotation2d.fromDegrees(0));
+        jointPos.put(jointPosition.mid, ArmPivotConstants.midPosition);
+        jointPos.put(jointPosition.high, ArmPivotConstants.highPosition);
+
     }
 
     public void run() {
-        output = controller.calculate(getRotation().getDegrees(), setpoint.getDegrees());
+        Rotation2d setpoint = jointPos.getOrDefault(position,Rotation2d.fromDegrees(0));
+        double output = controller.calculate(getRotation().getDegrees(), setpoint.getDegrees());
         motor.set(output);
     }
 
@@ -60,26 +65,25 @@ public class ArmPivot extends SubsystemBase {
                 .plus(ArmPivotConstants.encoderOffset);
     }
 
-    public Command setSetpointCommand(Rotation2d setpoint) {
-        return Commands.runOnce(() -> this.setSetpoint(setpoint));
+    public void setPosition(jointPosition position) {
+        this.position = position;
+    }
+
+    public Command setPositionCommand(jointPosition pos) {
+        return Commands.runOnce(() -> this.setPosition(pos));
     }
 
     public Command runCommand(){
         return Commands.run(this::run,this);
     }
 
-    private double getOutput(){
-        return output;
-    }
-
     public void toggleJoint(){
-        if(setpoint.equals(Rotation2d.fromDegrees(0))){
-            setpoint = ArmPivotConstants.ampScoringPosition;
-        }else if(setpoint.equals(ArmPivotConstants.ampScoringPosition)){
-            setpoint = ArmPivotConstants.speakerScoringPosition;
-        }
-        else if(setpoint.equals(ArmPivotConstants.speakerScoringPosition)){
-            setpoint = Rotation2d.fromDegrees(0);
+        if(position == jointPosition.starting){
+            position = jointPosition.mid;
+        }else if(position == jointPosition.mid ){
+            position = jointPosition.high;
+        }else if(position == jointPosition.high){
+            position = jointPosition.starting;
         }
     }
 
@@ -89,9 +93,6 @@ public class ArmPivot extends SubsystemBase {
 
     public void periodic(){
         SmartDashboard.putNumber("pivot/pos", getRotation().getDegrees());
-        SmartDashboard.putNumber("pivot/setPoint", setpoint.getDegrees());
-        SmartDashboard.putNumber("pivot/PID output",getOutput());
-        Shuffleboard.update();
-
+        System.out.println(getRotation().getDegrees());
     }
 }
