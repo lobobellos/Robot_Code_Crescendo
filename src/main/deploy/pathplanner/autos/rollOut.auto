@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3740584827141216,
-      "y": 1.5757180329526532
+      "x": 1.1892520467505387,
+      "y": 5.515013115334288
     },
     "rotation": 0
   },
@@ -12,9 +12,34 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "rollOut"
+            "name": "alignAndShoot"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "rollOut"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pusherOneShot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "alignAndShoot"
           }
         }
       ]
