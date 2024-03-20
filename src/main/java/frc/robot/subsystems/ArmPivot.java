@@ -93,6 +93,5 @@ public class ArmPivot extends SubsystemBase {
 
     public void periodic(){
         SmartDashboard.putNumber("pivot/pos", getRotation().getDegrees());
-        System.out.println(getRotation().getDegrees());
     }
 }
