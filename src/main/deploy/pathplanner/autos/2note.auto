@@ -14,6 +14,37 @@
         {
           "type": "named",
           "data": {
+            "name": "speakerShoot"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "centerNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeElevatorRun"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "stopShooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "alignAndShoot"
           }
         },
@@ -24,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "rollOut"
+                  "pathName": "rightNote"
                 }
               },
               {

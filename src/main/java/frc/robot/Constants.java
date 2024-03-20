@@ -203,7 +203,7 @@ public final class Constants {
 		}
 
 		public static final class SpeakerSetpoint {
-			public static double positionTolerance = 0.08;
+			public static double positionTolerance = 0.11;
 			public static Rotation2d rotationTolerance = Rotation2d.fromDegrees(5);
 
 			public static Pose2d center = new Pose2d(
