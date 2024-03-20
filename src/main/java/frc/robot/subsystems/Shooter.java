@@ -77,6 +77,10 @@ public class Shooter extends SubsystemBase {
         bottomSparkMax.stopMotor();
     }
 
+    public Command stopCommand(){
+        return Commands.run(this::stop,this);
+    }
+
     public Command runAmpCommand() {
         return Commands.run(this::runAmp, this);
     }

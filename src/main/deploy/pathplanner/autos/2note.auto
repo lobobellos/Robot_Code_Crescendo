@@ -30,7 +30,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "pusherOneShot"
+                  "name": "intakeElevatorRun"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "stopShooter"
                 }
               }
             ]

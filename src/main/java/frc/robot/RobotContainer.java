@@ -56,6 +56,7 @@ public class RobotContainer {
 	// run commands
 	private final Command runHookRaw = new RunCommand(hook::runRaw, hook);
 	private final Command retractHookRaw = new RunCommand(hook::retractRaw, hook);
+	private final Command stopShooter = shooter.stopCommand();
 	
 	// command groups
 	private final Command zeroAll = new ZeroAll(driveBase, gyro);
@@ -86,6 +87,9 @@ public class RobotContainer {
 		NamedCommands.registerCommand("resetRotation", resetRotation);
 		NamedCommands.registerCommand("intakeElevatorRun", intakeElevatorRun);
 		NamedCommands.registerCommand("alignAndShoot", alignAndShoot);
+		NamedCommands.registerCommand("speakerShoot", speakerShoot);
+		NamedCommands.registerCommand("stopShooter", stopShooter);
+
 
 		// Configure the button bindings
 		configureButtonBindings();
