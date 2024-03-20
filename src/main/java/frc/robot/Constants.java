@@ -166,8 +166,8 @@ public final class Constants {
 		public static final int limitSwitchTopPort = 0;
 		public static final int limitSwitchBottomPort = 1;
 
-		public static final double deploySpeed = 0.5;
-		public static final double retractSpeed = 0.5;
+		public static final double deploySpeed = 1;
+		public static final double retractSpeed = 1;
 	}
 
 	public static final class OIConstants {
