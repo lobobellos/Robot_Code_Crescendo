@@ -129,8 +129,8 @@ public class RobotContainer {
 		m_driverController.rightBumper()
 				.onTrue(driveBase.turnAmmount(Rotation2d.fromRotations(0.25)));
 
-		m_driverController.b()
-				.onTrue(alignToAmp);
+		// m_driverController.b()
+		// 		.onTrue(alignToAmp);
 	 	m_driverController.x()
 		 		.onTrue(alignToSpeaker);
 
