@@ -1,8 +1,9 @@
-package frc.robot.subsystems;
+  package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -25,6 +26,9 @@ public class Elevator extends SubsystemBase {
         ElevatorConstants.stallCurentLimit,
         ElevatorConstants.freeCurentLimit);
 
+    motorTop.burnFlash();
+    motorBottom.burnFlash();
+
     this.setDefaultCommand(stopCommand());
   }
 
@@ -32,17 +36,26 @@ public class Elevator extends SubsystemBase {
     motorTop.set(ElevatorConstants.kSpeedPercent);
     motorBottom.set(ElevatorConstants.kSpeedPercent);
   }
+  
+  public void reverse(){
+    motorTop.set(-ElevatorConstants.kSpeedPercent);
+    motorBottom.set(-ElevatorConstants.kSpeedPercent);
+  }
 
   public void stop() {
     motorTop.set(0);
     motorBottom.set(0);
   }
 
-  public RunCommand runCommand() {
-    return new RunCommand(this::run, this);
+  public Command runCommand() {
+    return Commands.run(this::run, this);
   }
 
-  public RunCommand stopCommand() {
-    return new RunCommand(this::stop, this);
+  public Command reverseCommand(){
+    return Commands.run(this::reverse,this);
+  }
+
+  public Command stopCommand() {
+    return Commands.run(this::stop, this);
   }
 }

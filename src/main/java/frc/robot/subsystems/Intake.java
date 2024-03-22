@@ -26,12 +26,20 @@ public class Intake extends SubsystemBase {
     // IntakeConstants.freeCurentLimit
     // );
 
+    MotorTop.burnFlash();
+    MotorBottom.burnFlash();
+
     this.setDefaultCommand(stopCommand());
   }
 
   public void run() {
     MotorTop.set(IntakeConstants.kSpeedPercent);
     MotorBottom.set(IntakeConstants.kSpeedPercent);
+  }
+  
+  public void reverse(){
+    MotorTop.set(-IntakeConstants.kSpeedPercent);
+    MotorBottom.set(-IntakeConstants.kSpeedPercent);
   }
 
   public void stop() {
@@ -43,7 +51,13 @@ public class Intake extends SubsystemBase {
     return new RunCommand(this::run, this);
   }
 
+  public RunCommand reverseCommand() {
+    return new RunCommand(this::reverse, this);
+  }
+
   public RunCommand stopCommand() {
     return new RunCommand(this::stop, this);
   }
+
+  
 }
