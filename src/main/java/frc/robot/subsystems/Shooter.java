@@ -44,6 +44,10 @@ public class Shooter extends SubsystemBase {
         bottomSparkMax.setInverted(ShooterConstants.kBottomInverted);
         bottomSparkMax.setSmartCurrentLimit(ShooterConstants.stallCurentLimit,
                 ShooterConstants.freeCurentLimit);
+
+        bottomSparkMax.burnFlash();
+        topSparkMax.burnFlash();
+
         setDefaultCommand(new RunCommand(this::stop, this));
 
         var tab = Shuffleboard.getTab("shooter");

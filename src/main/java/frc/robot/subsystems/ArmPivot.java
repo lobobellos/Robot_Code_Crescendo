@@ -52,6 +52,7 @@ public class ArmPivot extends SubsystemBase {
         jointPos.put(jointPosition.mid, ArmPivotConstants.midPosition);
         jointPos.put(jointPosition.high, ArmPivotConstants.highPosition);
 
+        motor.burnFlash();
     }
 
     public void run() {
