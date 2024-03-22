@@ -58,6 +58,7 @@ public class RobotContainer {
 	private final Command retractHookRaw = new RunCommand(hook::retractRaw, hook);
 	private final Command stopShooter = shooter.stopCommand();
 	
+	
 	// command groups
 	private final Command zeroAll = new ZeroAll(driveBase, gyro);
 	private final Command intakeElevatorRun = new IntakeElevatorRun(intake, elevator,pivot);
@@ -66,6 +67,11 @@ public class RobotContainer {
 
 	private final Command ampShoot = new AmpShoot(shooter, pneumatics,driveBase);
 	private final Command speakerShoot = new SpeakerShoot(shooter, pneumatics, driveBase,pivot);
+
+	private final Command reverseAll = Commands.parallel(
+		intake.reverseCommand(),
+		elevator.reverseCommand()
+		);
 
 	private final Command alignAndShoot = Commands.sequence(
 		new AlignToSpeaker(limelight, driveBase),
@@ -136,7 +142,7 @@ public class RobotContainer {
 
 		// Config mechanism controller buttons
 		m_MechanismController.x()
-				.onTrue(ampShoot);
+				.toggleOnTrue(reverseAll);
 		m_MechanismController.y()
 			.onTrue(speakerShoot);
 		m_MechanismController.b()
