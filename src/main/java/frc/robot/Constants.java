@@ -158,7 +158,7 @@ public final class Constants {
 		public static final double kSpeedPercent = 1;
 
 		public static final int freeCurentLimit = 20;
-		public static final int stallCurentLimit = 10;
+		public static final int stallCurentLimit = 20;
 	}
 
 	public static final class HookConstants {
@@ -208,7 +208,7 @@ public final class Constants {
 
 			public static Pose2d center = new Pose2d(
 					0,
-					-1.5,
+					-1.9,
 					Rotation2d.fromDegrees(0));
 			public static Pose2d right = new Pose2d(
 					1.5,
