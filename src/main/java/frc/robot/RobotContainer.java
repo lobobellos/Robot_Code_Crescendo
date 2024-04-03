@@ -119,8 +119,10 @@ public class RobotContainer {
 
 	private void configureButtonBindings() {
 
-		SmartDashboard.putData(new PathPlannerAuto("leave"));
-		SmartDashboard.putData(new PathPlannerAuto("2note"));
+		SmartDashboard.putData(new PathPlannerAuto("leaveStraight"));
+		SmartDashboard.putData(new PathPlannerAuto("3note"));
+		SmartDashboard.putData(new PathPlannerAuto("shootAndLeave"));
+		SmartDashboard.putData(new PathPlannerAuto("justShoot"));
 
 		// Config driver controller buttons
 

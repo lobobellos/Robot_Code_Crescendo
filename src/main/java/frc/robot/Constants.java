@@ -208,16 +208,16 @@ public final class Constants {
 
 			public static Pose2d center = new Pose2d(
 					0,
-					-1.9,
+					-1.6,
 					Rotation2d.fromDegrees(0));
 			public static Pose2d right = new Pose2d(
-					1.5,
+					1.12,
 					-1.0,
-					Rotation2d.fromDegrees(-61));
+					Rotation2d.fromDegrees(-50));
 			public static Pose2d left = new Pose2d(  
-					-1.5,
+					-1.12,
 					-1.0,
-					Rotation2d.fromDegrees(61));
+					Rotation2d.fromDegrees(50));
 		}
 
 		public static final class MovementPID {

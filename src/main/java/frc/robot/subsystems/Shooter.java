@@ -33,17 +33,19 @@ public class Shooter extends SubsystemBase {
     public Shooter() {
         topSparkMax.setIdleMode(IdleMode.kCoast);
         topSparkMax.setInverted(ShooterConstants.kTopInverted);
-        topSparkMax.setSmartCurrentLimit(ShooterConstants.stallCurentLimit,
-                ShooterConstants.freeCurentLimit);
-        topController.setP(ShooterConstants.FlywheelPIDF.kP, 0);
+        //topSparkMax.setSmartCurrentLimit(ShooterConstants.stallCurentLimit,
+        //        ShooterConstants.freeCurentLimit);
+        
+        
+                topController.setP(ShooterConstants.FlywheelPIDF.kP, 0);
         topController.setI(ShooterConstants.FlywheelPIDF.kI, 0);
         topController.setD(ShooterConstants.FlywheelPIDF.kD, 0);
         topController.setFF(ShooterConstants.FlywheelPIDF.kF, 0);
 
         bottomSparkMax.setIdleMode(IdleMode.kCoast);
         bottomSparkMax.setInverted(ShooterConstants.kBottomInverted);
-        bottomSparkMax.setSmartCurrentLimit(ShooterConstants.stallCurentLimit,
-                ShooterConstants.freeCurentLimit);
+        //bottomSparkMax.setSmartCurrentLimit(ShooterConstants.stallCurentLimit,
+        //        ShooterConstants.freeCurentLimit);
 
         bottomSparkMax.burnFlash();
         topSparkMax.burnFlash();
