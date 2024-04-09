@@ -1,4 +1,4 @@
-# Robot Code Creschendo 
+# Robot Code Crescendo 
 
 Robot code for the 2024 FRC season. 
 
